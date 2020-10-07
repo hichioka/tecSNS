@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from cms.models import Book, Impression, Post, WorkSeat
+from cms.models import Book, Impression, Card, WorkSeat
 
 # admin.site.register(Book)
 # admin.site.register(Impression)
@@ -19,10 +19,10 @@ class ImpressionAdmin(admin.ModelAdmin):
 admin.site.register(Impression, ImpressionAdmin)
 
 
-class PostAdmin(admin.ModelAdmin):
+class CardAdmin(admin.ModelAdmin):
     list_display = ('id','title', 'subtitle',)
     list_display_links = ('id', 'title',)
-admin.site.register(Post, PostAdmin)
+admin.site.register(Card, CardAdmin)
 
 
 class WorkSeatAdmin(admin.ModelAdmin):

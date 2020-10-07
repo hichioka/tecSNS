@@ -1,0 +1,37 @@
+{% extends "cms/base.html" %}
+
+{% block title %}カードの一覧{% endblock title %}
+
+{% block content %}
+    <h4 class="mt-4 border-bottom">カードの一覧</h4>
+    <a href="{% url 'cms:card_add' %}" class="btn btn-primary btn-sm my-3">追加</a>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">カード名</th>
+          <th scope="col">サブカード名</th>
+          <th scope="col">写真</th>
+          <th scope="col">説明</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <!-- 表示の方法を変更する -->
+      <tbody>
+        {% for card in cards %}
+        <tr>
+          <th scope="row">{{ card.id }}</th>
+          <td>{{ card.title }}</td>
+          <td>{{ card.subtitle }}</td>
+          <td>{{ card.tecimg }}</td>
+          <td>
+            <a href="{% url 'cms:card_mod' card_id=card.id %}" class="btn btn-outline-primary btn-sm">修正</a>
+            <a href="{% url 'cms:card_del' card_id=card.id %}" class="btn btn-outline-danger btn-sm">削除</a>
+            <a href="{% url 'cms:impression_list' card_id=card.id %}" class="btn btn-outline-info btn-sm">感想の一覧</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+{% endblock content %}

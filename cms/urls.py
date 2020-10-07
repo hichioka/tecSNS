@@ -14,4 +14,10 @@ urlpatterns = [
     path('impression/add/<int:book_id>/', views.impression_edit, name='impression_add'),        # 登録
     path('impression/mod/<int:book_id>/<int:impression_id>/', views.impression_edit, name='impression_mod'),  # 修正
     path('impression/del/<int:book_id>/<int:impression_id>/', views.impression_del, name='impression_del'),   # 削除
+
+    #カード投稿
+    path('card/', views.card_list, name='card_list'),   # 一覧
+    path('card/add/', views.card_edit, name='card_add'),  # 登録
+    path('card/mod/<int:card_id>/', views.card_edit, name='card_mod'),  # 修正
+    path('card/del/<int:card_id>/', views.card_del, name='card_del'),   # 削除
 ]

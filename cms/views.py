@@ -3,8 +3,11 @@ from django.http import HttpResponse
 
 from django.views.generic.list import ListView
 
-from cms.models import Book, Impression
-from cms.forms import BookForm, ImpressionForm
+from cms.models import Book, Impression, Card
+from cms.forms import BookForm, ImpressionForm, CardForm
+# , PostCreateForm
+
+from django.views.decorators.http import require_POST
 
 
 def book_list(request):
@@ -42,6 +45,7 @@ def book_del(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     book.delete()
     return redirect('cms:book_list')
+
 
 
 class ImpressionList(ListView):
@@ -88,4 +92,43 @@ def impression_del(request, book_id, impression_id):
     impression.delete()
     return redirect('cms:impression_list', book_id=book_id)
 
-    
+
+
+def card_list(request):
+    """書籍の一覧"""
+    # return HttpResponse('書籍の一覧')
+    cards = Card.objects.all().order_by('id')
+    return render(request,
+                  'cms/card_list.html',     # 使用するテンプレート
+                  {'cards': cards})         # テンプレートに渡すデータ
+
+
+def card_edit(request, card_id=None):
+    """書籍の編集"""
+    # return HttpResponse('書籍の編集')
+    if card_id:   # card_id が指定されている (修正時)
+        card = get_object_or_404(Card, pk=card_id)
+    else:         # card_id が指定されていない (追加時)
+        card = Card()
+
+    if request.method == 'POST':
+        form = CardForm(request.POST, instance=card)  # POST された request データからフォームを作成
+        if form.is_valid():    # フォームのバリデーション
+            card = form.save(commit=False)
+            card.save()
+            return redirect('cms:card_list')
+    else:    # GET の時
+        form = CardForm(instance=card)  # card インスタンスからフォームを作成
+
+    return render(request, 'cms/card_edit.html', dict(form=form, card_id=card_id))
+
+
+def card_del(request, card_id):
+    """書籍の削除"""
+    # return HttpResponse('書籍の削除')
+    card = get_object_or_404(Card, pk=card_id)
+    card.delete()
+
+
+
+
