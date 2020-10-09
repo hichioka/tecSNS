@@ -6,20 +6,26 @@
     <h4 class="mt-4 border-bottom">カード一覧</h4>
     <div class="d-flex flex-wrap">
 
-
       {% for card in cards %}
-        <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark">  <!-- idを取得するとこまではできてる -->
-          <div class="text-center py-2 px-3 my-3 mx-3 border bg-light rounded">
+      <div class="my-3 mx-3 border opacity-3 rounded-lg w-25">
+        <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark">
+          <div class="text-center py-3 border border-dark rounded-lg bg-light">
             <p>{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
-            <img class="rounded" src={{card.tecimg.url}} max-width="200" height="150">
+            <img class="rounded w-75" src={{card.tecimg.url}}>
+            <p>{{ card.tec_desc }}</p>
             <p>{{ card.desc1 }}</p>
             <p>{{ card.desc2 }}</p>
             <p>{{ card.desc3 }}</p>
-            {% csrf_token %}
-            <a href="{% url 'cms:card_mod' card_id=card.id %}" class="btn btn-outline-primary btn-sm">修正</a>
-            <a href="{% url 'cms:card_del' card_id=card.id %}" class="btn btn-outline-danger btn-sm">削除</a>
-        </div></a>
+          </div>
+        </a>
+        {% csrf_token %}
+        <div class="text-center my-3">
+          <p>{{ card.tag_list }}</p>
+          <a href="{% url 'cms:card_mod' card_id=card.id %}" class="btn btn-outline-primary btn-sm">修正</a>
+          <a href="{% url 'cms:card_del' card_id=card.id %}" class="btn btn-outline-danger btn-sm">削除</a>
+        </div>
+      </div>
       {% endfor %}
 
 

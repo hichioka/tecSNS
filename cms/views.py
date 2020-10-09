@@ -140,7 +140,7 @@ def card_detail(request, card_id):
     # return HttpResponse('カードの削除')
     card = get_object_or_404(Card, pk=card_id)
 
-    return render(request, 'cms/card_detail.html',     # 使用するテンプレート
-                  {'cardinid': card})
+    return render(request, 'cms/card_detail.html',     # 使用するテンプレートのパス
+                  {'card': card})
 
 

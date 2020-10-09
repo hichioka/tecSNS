@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'cms.apps.CmsConfig',
     'bootstrap4',
     'imagekit',
+    'taggit',
 ]
 
 MIDDLEWARE = [

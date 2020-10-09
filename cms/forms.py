@@ -27,11 +27,11 @@ class CardForm(ModelForm):
 
     class Meta:
         model = Card
-        fields = ('title','subtitle','tecimg', 'tec_desc', 'desc1','desc2','desc3')
+        fields = ('title','subtitle', 'tags', 'tecimg', 'tec_desc', 'desc1','desc2','desc3')
 
 
-class CardDetail(ModelForm):
-  """カードの詳細"""
-  class Meta:
-        model = Card
-        fields = ('title','subtitle','tecimg', 'tec_desc', 'desc1','desc2','desc3')
+# class CardDetail(ModelForm):
+#   """カードの詳細"""
+#   class Meta:
+#         model = Card
+#         fields = ('title','subtitle','tecimg', 'tec_desc', 'desc1','desc2','desc3')
