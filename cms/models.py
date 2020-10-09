@@ -22,9 +22,9 @@ class Impression(models.Model):
 
 class Card(models.Model):
     """カード"""
-    title = models.CharField('タイトル', max_length=15)
+    title = models.CharField('技術名称', max_length=15)
     subtitle = models.CharField('サブタイトル', max_length=15)
-    tecimg = models.ImageField(verbose_name='技術の写真', upload_to='images/',)
+    tecimg = models.ImageField(verbose_name='技術の写真', upload_to='images/', blank=True)
     tec_desc = models.TextField('機器説明 ',)
     desc1 = models.TextField('具体例1 ',)
     desc2 = models.TextField('具体例2 ',)

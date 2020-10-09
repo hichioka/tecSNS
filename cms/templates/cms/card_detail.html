@@ -1,23 +1,22 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 
-{% block title %}カードの編集{% endblock title %}
+{% block title %}カードの詳細{% endblock title %}
 
 {% block content %}
-    <h4 class="mt-4 mb-5 border-bottom">カードの編集</h4>
-<!--     <div class="d-flex flex-wrap"> -->
-
-      <!-- {% if card_id %}
-
-      <div class="text-center width=200px py-2 px-3 my-3 mx-3 border bg-light rounded">
-        <p>{{ card.title }}</p>
-        <p>{{ card.subtitle }}</p>
-        <img class="rounded" src={{card.tecimg.url}} max-width="200" height="150">
-        <p>{{ card.desc1 }}</p>
-        <p>{{ card.desc2 }}</p>
-        <p>{{ card.desc3 }}</p>
-      </div>
-      {% endif %} -->
+    <h4 class="mt-4 mb-5 border-bottom">カードの詳細</h4>
+      {% for card in cards %}
+            <p>{{ card.title }}</p>
+            <p>{{ card.subtitle }}</p>
+            <img class="rounded" src={{card.tecimg.url}} max-width="200" height="150">
+            <p>{{ card.desc1 }}</p>
+            <p>{{ card.desc2 }}</p>
+            <p>{{ card.desc3 }}</p>
+            {% csrf_token %}
+            <a href="{% url 'cms:card_mod' card_id=card.id %}" class="btn btn-outline-primary btn-sm">修正</a>
+            <a href="{% url 'cms:card_del' card_id=card.id %}" class="btn btn-outline-danger btn-sm">削除</a>
+        </div></a>
+      {% endfor %}
 
       <div>
       {% if card_id %} <!-- #カードidがあるときは修正ページに飛ばす -->
@@ -34,7 +33,4 @@
         </div>
         </form>
       </div>
-      
-    <!-- </div> -->
-    <a href="{% url 'cms:card_list' %}" class="btn btn-secondary btn-sm">戻る</a>
 {% endblock content %}

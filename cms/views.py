@@ -39,6 +39,7 @@ def book_edit(request, book_id=None):
     return render(request, 'cms/book_edit.html', dict(form=form, book_id=book_id))
 
 
+
 def book_del(request, book_id):
     """書籍の削除"""
     # return HttpResponse('書籍の削除')
@@ -61,6 +62,7 @@ class ImpressionList(ListView):
 
         context = self.get_context_data(object_list=self.object_list, book=book)    
         return self.render_to_response(context)
+
 
 
 def impression_edit(request, book_id, impression_id=None):
@@ -94,25 +96,26 @@ def impression_del(request, book_id, impression_id):
 
 
 
+#カード関係の処理
 def card_list(request):
-    """書籍の一覧"""
-    # return HttpResponse('書籍の一覧')
+    """カードの一覧"""
+    # return HttpResponse('カードの一覧')
     cards = Card.objects.all().order_by('id')
-    return render(request,
-                  'cms/card_list.html',     # 使用するテンプレート
+    return render(request, 'cms/card_list.html',     # 使用するテンプレート
                   {'cards': cards})         # テンプレートに渡すデータ
 
 
 def card_edit(request, card_id=None):
-    """書籍の編集"""
-    # return HttpResponse('書籍の編集')
+    """カードの編集"""
+    # return HttpResponse('カードの編集')
     if card_id:   # card_id が指定されている (修正時)
         card = get_object_or_404(Card, pk=card_id)
     else:         # card_id が指定されていない (追加時)
         card = Card()
 
     if request.method == 'POST':
-        form = CardForm(request.POST, instance=card)  # POST された request データからフォームを作成
+        card = Card()
+        form = CardForm(request.POST, request.FILES, instance=card,)  # POST された request データからフォームを作成、描画
         if form.is_valid():    # フォームのバリデーション
             card = form.save(commit=False)
             card.save()
@@ -124,11 +127,20 @@ def card_edit(request, card_id=None):
 
 
 def card_del(request, card_id):
-    """書籍の削除"""
-    # return HttpResponse('書籍の削除')
+    """カードの削除"""
+    # return HttpResponse('カードの削除')
     card = get_object_or_404(Card, pk=card_id)
     card.delete()
+    return redirect('cms:card_list')
 
 
+
+def card_detail(request, card_id):
+    """カードの削除"""
+    # return HttpResponse('カードの削除')
+    card = get_object_or_404(Card, pk=card_id)
+
+    return render(request, 'cms/card_detail.html',     # 使用するテンプレート
+                  {'cardinid': card})
 
 

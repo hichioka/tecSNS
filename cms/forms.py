@@ -18,7 +18,7 @@ class ImpressionForm(ModelForm):
 
 
 class CardForm(ModelForm):
-# subtitleを必須事項じゃなくする
+# 必須事項じゃなくする
     def __init__(self, *args, **kwd):
         super(CardForm, self).__init__(*args, **kwd)
         self.fields["subtitle"].required = False
@@ -28,13 +28,10 @@ class CardForm(ModelForm):
     class Meta:
         model = Card
         fields = ('title','subtitle','tecimg', 'tec_desc', 'desc1','desc2','desc3')
-        # widgets = {
-        #     'title': ModelForm.Textarea(
-        #         attrs={'rows': 1, 'cols': 20, 'placeholder': '技術名称'}
-        #     ),
-        #     'subtitle': ModelForm.Textarea(
-        #         attrs={'rows': 1, 'cols': 20, 'placeholder': 'サブ技術名称'}
-        #     ),
-        # }
 
-# データベースから該当のデータを持ってきて、編集する機能を入れたい
+
+class CardDetail(ModelForm):
+  """カードの詳細"""
+  class Meta:
+        model = Card
+        fields = ('title','subtitle','tecimg', 'tec_desc', 'desc1','desc2','desc3')

@@ -20,7 +20,7 @@ admin.site.register(Impression, ImpressionAdmin)
 
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('id','title', 'subtitle',)
+    list_display = ('id','title', 'subtitle',) #adminには画像のURLを取得して乗せたい
     list_display_links = ('id', 'title',)
 admin.site.register(Card, CardAdmin)
 
