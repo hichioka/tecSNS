@@ -7,12 +7,14 @@
     <div class="d-flex flex-wrap">
 
       {% for card in cards %}
-      <div class="my-3 mx-3 border opacity-3 rounded-lg w-25">
-        <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark">
-          <div class="text-center py-3 border border-dark rounded-lg bg-light">
+      <div class="my-3 mx-2 border rounded-lg w-25 h-100">
+        <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark text-decoration-none ">
+          <div class="text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
             <p>{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
-            <img class="rounded w-75" src={{card.tecimg.url}}>
+            <div class="mx-auto px-3 h-25">
+              <img class="rounded w-100" src={{card.tecimg.url}}>
+            </div>
             <p>{{ card.tec_desc }}</p>
             <p>{{ card.desc1 }}</p>
             <p>{{ card.desc2 }}</p>

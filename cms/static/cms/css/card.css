@@ -1,0 +1,28 @@
+<style>
+
+.card{
+  cursor: pointer;
+  
+}
+
+#front{
+  position:absolute;
+  z-index:6;
+  cursor:pointer;
+}
+
+#back{
+  transition: 0.8s;
+}
+
+#back:active{
+  /*position:absolute;*/
+/*  z-index:5;
+  cursor:pointer;*/
+  transform: rotateY(180deg);
+}
+ /*floatしたら横幅変わる問題*/
+
+/*.demo_stage{height: 100px;}*/
+
+</style>
