@@ -6,7 +6,7 @@ from django.views import generic
 
 from cms.models import Card
 from cms.forms import  CardForm
-# CardFilter
+
 from django.db.models import Q
 
 from django.views.decorators.http import require_POST
@@ -19,7 +19,7 @@ def card_list(request):
     # return HttpResponse('カードの一覧')
     cards = Card.objects.all().order_by('id')
     return render(request, 'cms/card_list.html',     # 使用するテンプレート
-                  {'cards': cards})         # テンプレートに渡すデータ
+                  {'cards': cards})         # テンプレートに渡すデータList
 
 
 def card_edit(request, card_id=None):
@@ -51,7 +51,6 @@ def card_del(request, card_id):
     return redirect('cms:card_list')
 
 
-
 def card_detail(request, card_id):
     """カードの削除"""
     # return HttpResponse('カードの削除')
@@ -61,15 +60,19 @@ def card_detail(request, card_id):
                   {'card': card})
 
 
-class card_search(generic.ListView): #ソートクラス
+#ソートクラス
+class card_search(generic.ListView):
     model = Card
  
     def get_queryset(self):
         # タグフラグがTrueで、作成日順に並び替え
-        return super().get_queryset().filter(tags=True).order_by('-title')
+        card = super().get_queryset().filter(tags=True).order_by('-title')
+        return render(request, 'cms/card_search.html',     # 使用するテンプレートのパス
+                  {'card': card})
 
 
-class CardSearch(ListView):  #検索クラス
+#検索クラス
+class CardSearch(ListView):
     model = Card
     template_name = 'cms/card_search.html'
     paginate_by = 8 #検索結果の表示数
@@ -78,14 +81,18 @@ class CardSearch(ListView):  #検索クラス
         query = self.request.GET.get('q', None) #Qはorやandに変換される
         lookups = (
             Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(category__name__icontains=query) |
+            Q(subtitle__icontains=query) |
+            Q(tec_desc__icontains=query) |
+            Q(desc1__icontains=query) |
+            Q(desc2__icontains=query) |
+            Q(desc3__icontains=query) |
             Q(tags__name__icontains=query)
         )
         if query is not None:
             qs = super().get_queryset().filter(lookups).distinct() #distinctで重複を防ぐ
             return qs
         qs = super().get_queryset()
+
         return qs
 
     def get_context_data(self, **kwargs):
@@ -93,3 +100,4 @@ class CardSearch(ListView):  #検索クラス
         query = self.request.GET.get('q')
         context['query'] = query
         return context
+

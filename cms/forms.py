@@ -5,7 +5,6 @@ from cms.models import Card
 import django_filters
 
 
-
 class CardForm(ModelForm):
 # 必須事項じゃなくする
     def __init__(self, *args, **kwd):
