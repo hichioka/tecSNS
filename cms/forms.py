@@ -1,20 +1,9 @@
 from django.forms import ModelForm
 
-from cms.models import Book, Impression, Card
+from cms.models import Card
 
+import django_filters
 
-class BookForm(ModelForm):
-    """書籍のフォーム"""
-    class Meta:
-        model = Book
-        fields = ('name', 'publisher', 'page', )
-
-
-class ImpressionForm(ModelForm):
-    """感想のフォーム"""
-    class Meta:
-        model = Impression
-        fields = ('comment', )
 
 
 class CardForm(ModelForm):
@@ -28,6 +17,14 @@ class CardForm(ModelForm):
     class Meta:
         model = Card
         fields = ('title','subtitle', 'tags', 'tecimg', 'tec_desc', 'desc1','desc2','desc3')
+
+
+# class CardFilter(django_filters.FilterSet):
+#     name = django_filters.CharFilter(lookup_expr='iexact')
+
+#     class Meta:
+#         model = Card
+#         fields = ['title', 'tags']
 
 
 # class CardDetail(ModelForm):

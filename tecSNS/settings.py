@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'imagekit',
     'taggit',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

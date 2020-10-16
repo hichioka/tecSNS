@@ -1,3 +1,5 @@
+Django MTVモデル　参考さいと
+https://qiita.com/kotayanagi/items/01e9a617571e2b9526bc
 
 ファイルアップロードする際のポイント
 https://codor.co.jp/django/how-to-upload-file
