@@ -7,6 +7,7 @@
     <h4 class="mt-4 mb-5 border-bottom">カードの編集</h4>
      <div class="d-flex flex-wrap">
 
+      <!-- カードの完成形のプレビュー -->
       <div class="text-center width=200px py-2 px-3 my-3 mx-3 border bg-light rounded">
         <p>{{ card.title }}</p>
         <p>{{ card.subtitle }}</p>
@@ -16,12 +17,14 @@
         <p>{{ card.desc3 }}</p>
       </div>
 
+      <!-- フォームの表示 -->
       <div>
       {% if card_id %} <!-- #カードidがあるときは修正ページに飛ばす -->
         <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'cms:card_mod' card_id=card_id %}">
       {% else %}<!-- そのほかはaddの新規追加に持ってく -->
         <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'cms:card_add' %}">
       {% endif %}
+      
       {% csrf_token %}
       {% bootstrap_form form layout='horizontal' %}
         <div class="form-group row">
@@ -29,7 +32,6 @@
             <button type="submit" class="btn btn-primary">送信</button>
           </div>
         </div>
-        </form>
       </div>
 
     </div>

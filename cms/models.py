@@ -2,6 +2,7 @@ from django.db import models
 from taggit.managers import TaggableManager
 
 
+#カードモデルの定義
 class Card(models.Model):
     """カード"""
     title = models.CharField('技術名称 15文字まで', max_length=15)
@@ -18,6 +19,7 @@ class Card(models.Model):
         return self.title
 
 
+#ワークシートモデルの定義
 class WorkSeat(models.Model):
     """カード"""
     title = models.CharField('タイトル', max_length=20)

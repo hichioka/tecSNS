@@ -7,32 +7,6 @@
 
     <div class="d-flex flex-wrap">
 
-      <!-- ソートボタン -->
-      <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-          並び替えの条件を指定
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <!-- プルダウンの条件指定の中身 -->
-          <li role="presentation"><a href="#">追加日順</a></li>
-          <li role="presentation"><a href="#">タグの関連性順に</a></li>
-          <li role="presentation"><a href="#">五十音順</a></li>
-        </ul>
-      </div>
-
-      <form method="get">
-        {{ filter.form.as_p }}
-        <input type="submit" value="並び替え"/>
-      </form>
-      {% for obj in filter.qs %}
-        {{ obj.title }} - ${{ obj.tags }}<br />
-      {% endfor %}
-
-    </div>
-
-    <div class="d-flex flex-wrap">
-
       {% for card in cards%}
       <div class="my-3 mx-2 border rounded-lg w-25 h-100">
         <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark text-decoration-none ">

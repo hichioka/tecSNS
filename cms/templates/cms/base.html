@@ -6,7 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}">
 {% block extra_css %}{% endblock extra_css %}
-<title>{% block title %}My books{% endblock %}</title>
+
+<title>{% block title %}My cards{% endblock %}</title>
 </head>
 <body>
 
@@ -14,14 +15,37 @@
   <header>
     <div class="d-flex flex-wrap">
 
-      <a href="" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-primary btn-sm">ホーム</a>
-      <a href="" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-danger btn-sm">ホーム</a>
+      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">ホーム</a>
+      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ホーム</a>
 
       <!-- 検索窓の設置 -->
-      <form class="center-block form-inline w-75 py-2 my-2 my-lg-0" action="{% url 'cms:card_search' %}" method="GET">
+      <form class="center-block form-inline w-75 py-2 my-auto my-lg-0" action="{% url 'cms:card_search' %}" method="GET">
         <input class="w-75 form-control mr-sm-2" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">検索</button>
+
+      <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-warning btn-sm">カードを選択</a>
+
+      <!-- ソートボタン -->
+      <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          並び替えの条件を指定
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <!-- プルダウンの条件指定の中身 -->
+          <li role="presentation"><a href="#">追加日順</a></li>
+          <li role="presentation"><a href="#">タグの関連性順に</a></li>
+          <li role="presentation"><a href="#">五十音順</a></li>
+        </ul>
+      </div>
+
+      <form method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" value="並び替え(未実装)"/>
       </form>
+      {% for obj in filter.qs %}
+        {{ obj.title }} - ${{ obj.tags }}<br />
+      {% endfor %}
 
     </div>
   </header>
@@ -39,6 +63,7 @@
 
 <script src="{% static 'cms/js/jquery-3.5.1.min.js' %}"></script>
 <script src="{% static 'cms/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'cms/js/bootstrap.min.js' %}"></script>
 {% block extra_js %}{% endblock extra_js%}
 </body>
 </html>
