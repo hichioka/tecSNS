@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views import View
 from django.views import generic
 
-from cms.models import Card
+from cms.models import Card, WorkSeat
 from cms.forms import  CardForm, ChkForm
 
 from django.db.models import Q
@@ -96,7 +96,7 @@ def card_choice(request):
     # 値があるときはchoicedに遷移
     if request.method == "POST":
         cardlist = request.POST.getlist('choice')
-        cards = Card.objects.get_queryset().filter(id=cardlist[*])
+        cards = Card.objects.get_queryset().filter(id=cardlist[1])
 
         return render(request, 'cms/card_choiced.html',
                   {'cards': cards})
@@ -106,82 +106,12 @@ def card_choice(request):
                   {'cards': cards})
 
 
-# def card_choiced(request, card_id):
-#     """カード洗濯画面で、選択の処理"""
-#     if request.method == "POST":
-#         # cards = Card
-#         cardlist = request.POST.getlist('choice')
-#         card = get_object_or_404(cardlist,  pk=card_id) #choiceでポストされたidからdbに該当するデータを引き出してきて、それを格納
-#         print(card)
 
-#         return render(request, 'cms/card_choiced.html',     # 使用するテンプレート
-#                   {'cards': card})
-
-
-#複数選択テスト
-# def card_choice(request):
-#     labels = ['チェック','複数チェック','ラジオボタン','動的選択肢１','動的選択肢２']
-#     # 入力結果を格納する辞書
-#     results = {}
-#     radios = {}
-#     ret = ''
-#     if request.method == 'POST':
-#         # 入力されたデータの受取
-#         results[labels[0]] = request.POST.getlist("one")
-#         results[labels[1]] = request.POST.getlist("two")
-#         results[labels[2]] = request.POST.getlist("three")
-#         results[labels[3]] = request.POST.getlist("four")
-#         results[labels[4]] = request.POST.getlist("five")
-#         ret = 'OK'
-#         c = {'results': results,'ret':ret}
-#     else:    
-#         form = forms.ChkForm()
-#         choice1 = []
-#         choice1.append(('1','動的選択肢１'))
-#         choice1.append(('2','動的選択肢２'))
-#         choice1.append(('3','動的選択肢３'))
-#         choice1.append(('4','動的選択肢４'))
-#         form.fields['four'].choices = choice1
-#         form.fields['four'].initial = ['2']    
-#         form.fields['five'].choices = choice1
-#         form.fields['five'].initial = ['3']    
-#         c = {'form': form,'ret':ret}
-#         # CFRF対策（必須）
-#         c.update(csrf(request))
-#     return render(request,'demo03.html',c)
-
-
-# class card_choice(generic.ListView):
-#     paginate_by = 5
-#     template_name = 'cms/card_choice.html'
-#     model = Card
-#     def post(self, request, *args, **kwargs):
-#         checks_value = request.Card.getlist('checks[]')
-#         logger.debug("checks_value = " + str(checks_value))
-
-
-# #ソートクラス
-# class card_search(generic.ListView):
-#     model = Card
- 
-#     def get_queryset(self):
-#         # タグフラグがTrueで、作成日順に並び替え
-#         card = super().get_queryset().filter(tags=True).order_by('-title')
-#         return render(request, 'cms/card_search.html',     # 使用するテンプレートのパス
-#                   {'card': card})
-
-
-# class SampleChoiceView(View):
-#     """ソートの中身"""
-#     def get(self, request):
-#         form = forms.SortChoice()
-#         context = {
-#             'form': form
-#         }
-
-#         return render(request, 'card_choiced.html', context)
-
-# sample_choice_view = SampleChoiceView.as_view()
+def workseat_list(request):
+    """カードの一覧"""
+    Wseat = WorkSeat.objects.all().order_by('id') #全部のidを取得して、cardsに入れている
+    return render(request, 'cms/workseat_list.html',     # 使用するテンプレート
+                  {'Wseat': Wseat})         # テンプレートに渡すデータList
 
 
 

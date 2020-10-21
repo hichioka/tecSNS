@@ -20,6 +20,6 @@ admin.site.register(Card, CardAdmin)
 
 
 class WorkSeatAdmin(admin.ModelAdmin):
-    list_display = ('id','title',)
+    list_display = ('id','title', 'desc',)
     list_display_links = ('id', 'title',)
 admin.site.register(WorkSeat, WorkSeatAdmin)

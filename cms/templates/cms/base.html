@@ -15,8 +15,8 @@
   <header>
     <div class="d-flex flex-wrap">
 
-      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">ホーム</a>
-      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ホーム</a>
+      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">カード</a>
+      <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ワークシート</a>
 
       <!-- 検索窓の設置 -->
       <form class="center-block form-inline w-75 py-2 my-auto my-lg-0" action="{% url 'cms:card_search' %}" method="GET">

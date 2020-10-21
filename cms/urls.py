@@ -20,5 +20,7 @@ urlpatterns = [
     path('card/choiced/', views.card_choice, name='card_choiced'),   # カード選択
     # path('card/print/', views.card_choice, name='card_print'),   # カード選択
 
+    path('workseat/', views.workseat_list, name='workseat_list'),
+
 
 ]  + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

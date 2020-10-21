@@ -21,8 +21,10 @@ class Card(models.Model):
 
 #ワークシートモデルの定義
 class WorkSeat(models.Model):
-    """カード"""
+    """ワークシート"""
     title = models.CharField('タイトル', max_length=20)
+    Wseatimg = models.FileField(verbose_name='シートのデータ', upload_to='images/', default='')
+    desc = models.TextField('ワークシート説明', default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

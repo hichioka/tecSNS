@@ -21,6 +21,9 @@ class CardForm(ModelForm):
         fields = ('title','subtitle', 'tags', 'tecimg', 'tec_desc', 'desc1','desc2','desc3')
 
 
+# ここにデジタルのワークシートのフォームを挿入する
+
+
 #ソートフォームテスト
 class SortChoice(forms.Form):
   choice1 = forms.fields.ChoiceField(
