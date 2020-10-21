@@ -95,8 +95,12 @@ def card_choice(request):
     # 値がないときはchoiceに遷移
     # 値があるときはchoicedに遷移
     if request.method == "POST":
+        card = [20]
         cardlist = request.POST.getlist('choice')
-        cards = Card.objects.get_queryset().filter(id=cardlist[1])
+        lookups = (
+            Q(id__icontains=cardlist)
+            )
+        cards = Card.objects.get_queryset().filter(lookups)
 
         return render(request, 'cms/card_choiced.html',
                   {'cards': cards})

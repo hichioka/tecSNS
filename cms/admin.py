@@ -1,9 +1,7 @@
 from django.contrib import admin
 
-from cms.models import Card, WorkSeat
+from cms.models import Card, WorkSeat, WSque
 
-# admin.site.register(Book)
-# admin.site.register(Impression)
 
 
 class CardAdmin(admin.ModelAdmin):
@@ -23,3 +21,9 @@ class WorkSeatAdmin(admin.ModelAdmin):
     list_display = ('id','title', 'desc',)
     list_display_links = ('id', 'title',)
 admin.site.register(WorkSeat, WorkSeatAdmin)
+
+
+class WSFormAdmin(admin.ModelAdmin):
+    list_display = ('id','title', 'question1', 'question2', 'question3', 'question4', 'question5',)
+    list_display_links = ('id', 'title',)
+admin.site.register(WSque, WSFormAdmin)

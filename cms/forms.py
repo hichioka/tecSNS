@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 
-from cms.models import Card, WorkSeat
+from cms.models import Card, WorkSeat, WSque
 
 import django_filters
 
@@ -21,7 +21,20 @@ class CardForm(ModelForm):
         fields = ('title','subtitle', 'tags', 'tecimg', 'tec_desc', 'desc1','desc2','desc3')
 
 
-# ここにデジタルのワークシートのフォームを挿入する
+#ワークシートフォーム（webでワークするとき用） queの数は制限するか動的に増やすか
+#queの数も科学的に何個がいいみたいなエビデンスあるといい
+class WEqueForm(ModelForm):
+# 必須事項じゃなくする
+    def __init__(self, *args, **kwd):
+        super(WSque, self).__init__(*args, **kwd)
+        self.fields["question2"].required = False
+        self.fields["question3"].required = False
+        self.fields["question4"].required = False
+        self.fields["question5"].required = False
+
+    class Meta:
+        model = WSque
+        fields = ('title', 'question1', 'question2', 'question3', )
 
 
 #ソートフォームテスト

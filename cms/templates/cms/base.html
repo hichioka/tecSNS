@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" type="image/x-icon" href="../media/fabcon.png">
 <link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}">
 {% block extra_css %}{% endblock extra_css %}
 
@@ -15,15 +16,16 @@
   <header>
     <div class="d-flex flex-wrap">
 
-      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">カード</a>
-      <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ワークシート</a>
+      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">カード一覧</a>
+      <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ワークシート一覧</a>
+      <!-- このしたにワークボタンをつける -->
 
       <!-- 検索窓の設置 -->
       <form class="center-block form-inline w-75 py-2 my-auto my-lg-0" action="{% url 'cms:card_search' %}" method="GET">
         <input class="w-75 form-control mr-sm-2" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">検索</button>
 
-      <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-warning btn-sm">カードを選択</a>
+      <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-warning btn-sm">印刷カードを選択</a>
 
       <!-- ソートボタン -->
       <div class="dropdown">

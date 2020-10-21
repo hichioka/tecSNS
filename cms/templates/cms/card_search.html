@@ -11,15 +11,12 @@
       <div class="my-3 mx-2 border rounded-lg w-25 h-100">
         <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark text-decoration-none ">
           <div class="text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
-            <p>{{ card.title }}</p>
+            <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-25">
               <img class="rounded w-100" src={{card.tecimg.url}}>
             </div>
             <p>{{ card.tec_desc }}</p>
-            <p>{{ card.desc1 }}</p>
-            <p>{{ card.desc2 }}</p>
-            <p>{{ card.desc3 }}</p>
           </div>
         </a>
         {% csrf_token %}

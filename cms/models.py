@@ -29,3 +29,19 @@ class WorkSeat(models.Model):
 
     def __str__(self):
         return self.title
+
+
+#webワークフォームのモデル
+#モデルのqueを動的に増やすか、制限をつけるかどっちか必要
+class WSque(models.Model):
+    """ワークシート"""
+    title = models.CharField('タイトル', max_length=20)
+    question1 = models.CharField('問1', max_length=50)
+    question2 = models.CharField('問2', max_length=50)
+    question3 = models.CharField('問3', max_length=50)
+    question4 = models.CharField('問4', max_length=50)
+    question5 = models.CharField('問5', max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
