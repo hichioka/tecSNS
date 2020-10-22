@@ -64,7 +64,6 @@ class CardSearch(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q', None) #Qはorやandに変換される
-        #検索時の条件指定
         lookups = (
             Q(title__icontains=query) |
             Q(subtitle__icontains=query) |
@@ -90,24 +89,13 @@ class CardSearch(ListView):
 
 def card_choice(request):
     """印刷するカードの選択画面に遷移"""
-
-    # チェックボックスから値があるのかないのかで条件分けして表示する
-    # 値がないときはchoiceに遷移
-    # 値があるときはchoicedに遷移
     if request.method == "POST":
-        card = [20]
         cardlist = request.POST.getlist('choice')
-        Clen = len(cardlist) #cardlistのサイズ取得
-        lookups = (
-            Q(id__iexact=cardlist[0]) |
-            Q(id__iexact=cardlist[1]) |
-            Q(id__iexact=cardlist[2]) |
-            Q(id__iexact=cardlist[3]) |
-            Q(id__iexact=cardlist[4]) 
-            #ココをlistのサイズまでにできたらクリア
-            # 現状は５個までに指定して先進む
-            ) 
-        cards = Card.objects.get_queryset().filter(lookups)
+        queries = [Q(id__iexact=value) for value in cardlist]
+        query = queries.pop()
+        for item in queries:
+            query |= item
+        cards = Card.objects.get_queryset().filter(query)
 
         return render(request, 'cms/card_choiced.html',
                   {'cards': cards})
@@ -121,6 +109,8 @@ def card_choice(request):
 #データを並べたPDFを出力して表示する画面
 # def card_print(request):
 #     if request.method == "POST":
+#         return render(request, 'cms/card_print.html',     # 使用するテンプレート
+#                   {'cards': cards})
 
 
 
