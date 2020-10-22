@@ -97,9 +97,16 @@ def card_choice(request):
     if request.method == "POST":
         card = [20]
         cardlist = request.POST.getlist('choice')
+        Clen = len(cardlist) #cardlistのサイズ取得
         lookups = (
-            Q(id__icontains=cardlist)
-            )
+            Q(id__iexact=cardlist[0]) |
+            Q(id__iexact=cardlist[1]) |
+            Q(id__iexact=cardlist[2]) |
+            Q(id__iexact=cardlist[3]) |
+            Q(id__iexact=cardlist[4]) 
+            #ココをlistのサイズまでにできたらクリア
+            # 現状は５個までに指定して先進む
+            ) 
         cards = Card.objects.get_queryset().filter(lookups)
 
         return render(request, 'cms/card_choiced.html',
@@ -108,6 +115,13 @@ def card_choice(request):
         cards = Card.objects.all().order_by('id')
         return render(request, 'cms/card_choice.html',     # 使用するテンプレート
                   {'cards': cards})
+
+
+#プリントアウト画面に移行する関数
+#データを並べたPDFを出力して表示する画面
+# def card_print(request):
+#     if request.method == "POST":
+
 
 
 
