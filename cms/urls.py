@@ -18,7 +18,7 @@ urlpatterns = [
     path('card/search/', views.CardSearch.as_view(), name='card_search'),   # 検索結果
     path('card/choice/', views.card_choice, name='card_choice'),   # カード選択
     path('card/choiced/', views.card_choice, name='card_choiced'),   # カード選択
-    # path('card/print/', views.card_choice, name='card_print'),   # カード選択
+    path('card/print/', views.PdfView.as_view(), name='card_print'),   # カード選択
 
     path('workseat/', views.workseat_list, name='workseat_list'),
 

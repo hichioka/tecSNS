@@ -1,16 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-
+from django.views.decorators.http import require_POST
 from django.views.generic.list import ListView
 from django.views import View
 from django.views import generic
 
+from django.db.models import Q
+
 from cms.models import Card, WorkSeat
 from cms.forms import  CardForm, ChkForm
 
-from django.db.models import Q
-
-from django.views.decorators.http import require_POST
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import landscape
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.pdfgen import canvas
 
 
 
@@ -19,7 +24,7 @@ def card_list(request):
     """カードの一覧"""
     cards = Card.objects.all().order_by('id') #全部のidを取得して、cardsに入れている
     return render(request, 'cms/card_list.html',     # 使用するテンプレート
-                  {'cards': cards})         # テンプレートに渡すデータList
+                  {'cards': cards})         # テンプレートに渡すデータ辞書
 
 
 def card_edit(request, card_id=None):
@@ -87,10 +92,33 @@ class CardSearch(ListView):
         return context
 
 
+# def card_choice(request):
+#     cards = Card.objects.all().order_by('id')
+#     return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+#                   {'cards': cards})
+
+
+def ChoiceSaveList(cardlist):
+    """印刷するカードをもう一個listに保存してコピー返す関数"""
+    savecardlist = cardlist
+    return savecardlist
+
+
+# def card_choiced(request):
+#     cards = ChoiceSaveList(request)
+#     if len(cards) > 0:
+#         return render(request, 'cms/card_choiced.html',
+#                   {'cards': cards})
+#     else:
+#         cards = Card.objects.all().order_by('id')
+#         return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+#                   {'cards': cards})
+
+
 def card_choice(request):
-    """印刷するカードの選択画面に遷移"""
     if request.method == "POST":
         cardlist = request.POST.getlist('choice')
+        ChoiceSaveList(cardlist) #コピーを作成
         queries = [Q(id__iexact=value) for value in cardlist]
         query = queries.pop()
         for item in queries:
@@ -99,20 +127,65 @@ def card_choice(request):
 
         return render(request, 'cms/card_choiced.html',
                   {'cards': cards})
-    else:
+
+    #からで送信した時の条件も入れておく、もしくわifの方に入れておく
+    else:#初めにレンダリングする時、POstされて値がないときに帰るようにする
         cards = Card.objects.all().order_by('id')
         return render(request, 'cms/card_choice.html',     # 使用するテンプレート
                   {'cards': cards})
 
 
-#プリントアウト画面に移行する関数
-#データを並べたPDFを出力して表示する画面
-# def card_print(request):
-#     if request.method == "POST":
-#         return render(request, 'cms/card_print.html',     # 使用するテンプレート
-#                   {'cards': cards})
+#pdfにして出力
+class PdfView(View):
+
+    #関数定義
+    filename = 'tecCard.pdf'  # 保存時の出力ファイル名
+    font_name = 'HeiseiKakuGo-W5'  # フォントの指定
+    title = 'tecCard.pdf'
+
+    # def savelist(request):
+    #     if request.method == "POST":
+    #         cardlist = request.POST.getlist('choice')
+    #         queries = [Q(id__iexact=value) for value in cardlist]
+    #         query = queries.pop()
+    #         for item in queries:
+    #             query |= item
+    #         cards = Card.objects.get_queryset().filter(query)
+    #     return cards
 
 
+    def get(self, request, *args, **kwargs):
+        # pdf用のContent-TypeやContent-Dispositionをセット
+        response = HttpResponse(status=200, content_type='application/pdf')
+        response['Content-Disposition'] = 'filename="{}"'.format(self.filename)
+        # 即ダウンロードしたい時は、attachmentをつける(ページ遷移しない)
+        # response['Content-Disposition'] = 'attachment; filename="example.pdf"'
+        self._create_pdf(response)
+        return response
+
+
+    def _create_pdf(self, response):
+
+        size = landscape(A4)#横向き
+        # size = portrait(A4)#縦向き
+        #サイズの変更は後々入れていく
+
+        # pdfを描く場所を作成：pdfの原点は左上にする(bottomup=False)
+        p = canvas.Canvas(response, pagesize=size, bottomup=False)
+        pdfmetrics.registerFont(UnicodeCIDFont(self.font_name))
+        p.setTitle(self.title)  #pdfのタイトルを指定
+
+        # フォントとサイズ(9)を指定して、左から20mm・上から18mmの位置に「はろーわーるど」を表示
+        p.setFont(self.font_name, 9)
+        p.drawString(20*mm, 18*mm, 'ハロー')
+
+        p.showPage()#改ぺーじ
+        #２ページ目で裏面は逆から載せないと、裏と表の内容が違うものになってしまう
+        p.setFont(self.font_name, 9)
+        p.drawString(20*mm, 18*mm, 'はろーわーるど')
+
+        # pdfの書き出し
+        p.save()
 
 
 def workseat_list(request):

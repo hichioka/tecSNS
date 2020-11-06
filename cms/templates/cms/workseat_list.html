@@ -20,8 +20,20 @@
             <p>{{ Wseat.desc }}</p>
           </div>
         {% csrf_token %}
+        <div class="text-center my-3">
+          <p>{{ card.tag_list }}</p>
+          <a href="" class="btn btn-outline-primary btn-sm">ワークをする</a>
+          <a href="" class="btn btn-outline-danger btn-sm">修正</a>
+        </div>
+
       </div>
       {% endfor %}
+
+      <div>
+        <div class="justify-content-center my-auto mx-auto">
+          <a href="" class="btn btn-primary btn-sm my-3">追加</a>
+        </div>
+      </div>
 
 
 {% endblock content %}

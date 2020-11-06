@@ -10,7 +10,7 @@
 
 {% block content %}
     <p>選択したカードはこれらでいいですか？</p>
-    
+
     <div class="d-flex flex-wrap">
             {% for card in cards%}
       <label class="my-3 mx-2 w-25 h-auto">
@@ -35,11 +35,7 @@
           </div>
         </div> -->
 
-        <div class="form-group row">
-          <div class="offset-md-3 col-md-9">
-            <button type="submit" class="btn btn-danger">印刷ページへ</button>
-          </div>
-        </div>
+        <a href="{% url 'cms:card_print' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">pdfを表示</a>
       </form>
     </div>
 

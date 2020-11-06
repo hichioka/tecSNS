@@ -23,7 +23,7 @@ class CardForm(ModelForm):
 
 #ワークシートフォーム（webでワークするとき用） queの数は制限するか動的に増やすか
 #queの数も科学的に何個がいいみたいなエビデンスあるといい
-class WEqueForm(ModelForm):
+class WSqueForm(ModelForm):
 # 必須事項じゃなくする
     def __init__(self, *args, **kwd):
         super(WSque, self).__init__(*args, **kwd)

@@ -13,19 +13,18 @@
 <body>
 
   <!-- headerの記述 -->
-  <header>
-    <div class="d-flex flex-wrap">
+  <header class="sticky-top">
+    <div class="d-flex flex-wrap bg-light">
 
-      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">カード一覧</a>
-      <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-danger btn-sm">ワークシート一覧</a>
-      <!-- このしたにワークボタンをつける -->
+      <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-dark btn-sm">カード一覧</a>
+      <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-dark btn-sm">ワークシート一覧</a>
 
       <!-- 検索窓の設置 -->
       <form class="center-block form-inline w-75 py-2 my-auto my-lg-0" action="{% url 'cms:card_search' %}" method="GET">
         <input class="w-75 form-control mr-sm-2" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">検索</button>
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">検索</button>
 
-      <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-warning btn-sm">印刷カードを選択</a>
+      <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-dark btn-sm">印刷カードを選択</a>
 
       <!-- ソートボタン -->
       <div class="dropdown">

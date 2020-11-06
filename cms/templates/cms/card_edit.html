@@ -7,16 +7,6 @@
     <h4 class="mt-4 mb-5 border-bottom">カードの編集</h4>
      <div class="d-flex flex-wrap">
 
-      <!-- カードの完成形のプレビュー -->
-      <div class="text-center width=200px py-2 px-3 my-3 mx-3 border bg-light rounded">
-        <p>{{ card.title }}</p>
-        <p>{{ card.subtitle }}</p>
-        <img class="rounded" src={{card.tecimg.url}} max-width="200" height="150">
-        <p>{{ card.desc1 }}</p>
-        <p>{{ card.desc2 }}</p>
-        <p>{{ card.desc3 }}</p>
-      </div>
-
       <!-- フォームの表示 -->
       <div>
       {% if card_id %} <!-- #カードidがあるときは修正ページに飛ばす -->
@@ -32,6 +22,7 @@
             <button type="submit" class="btn btn-primary">送信</button>
           </div>
         </div>
+
       </div>
 
     </div>
