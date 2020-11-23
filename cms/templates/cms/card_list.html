@@ -16,10 +16,7 @@
             <div class="mx-auto px-3 h-75">
               <img class="rounded w-100" src={{card.tecimg.url}}>
             </div>
-            <p>{{ card.tec_desc }}</p>
-<!--             <p>{{ card.desc1 }}</p>
-            <p>{{ card.desc2 }}</p>
-            <p>{{ card.desc3 }}</p> -->
+            <p>{{ card.tec_desc}}</p>
           </div>
         </a>
         {% csrf_token %}
@@ -32,10 +29,5 @@
       {% endfor %}
 
 
-      <div>
-        <div class="justify-content-center my-auto mx-auto">
-          <a href="{% url 'cms:card_add' %}" class="btn btn-primary btn-sm my-3">追加</a>
-        </div>
-      </div>
     </div>
 {% endblock content %}

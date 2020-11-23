@@ -114,7 +114,7 @@ def ChoiceSaveList(cardlist):
 #         return render(request, 'cms/card_choice.html',     # 使用するテンプレート
 #                   {'cards': cards})
 
-
+#選択したカードを返す関数
 def card_choice(request):
     if request.method == "POST":
         cardlist = request.POST.getlist('choice')

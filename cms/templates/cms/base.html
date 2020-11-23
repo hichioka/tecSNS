@@ -14,7 +14,7 @@
 
   <!-- headerの記述 -->
   <header class="sticky-top">
-    <div class="d-flex flex-wrap bg-light">
+    <div class="d-flex flex-wrap bg-warning">
 
       <a href="{% url 'cms:card_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-dark btn-sm">カード一覧</a>
       <a href="{% url 'cms:workseat_list' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-dark btn-sm">ワークシート一覧</a>
@@ -59,7 +59,9 @@
 
   <!-- footerの記述 -->
   <footer>
-    <p>ここにフッター入れます</p>
+      <div class="justify-content-center my-auto mx-auto position-fixed" style="bottom:30px; right:30px;">
+          <a href="{% url 'cms:card_add' %}" class="btn btn-primary btn-sm my-3">追加</a>
+      </div>
   </footer>
 
 <script src="{% static 'cms/js/jquery-3.5.1.min.js' %}"></script>
