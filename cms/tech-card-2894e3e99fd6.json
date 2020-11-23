@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tech-card",
+  "private_key_id": "2894e3e99fd6405945be4664b1bcae3b91e30afe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+d3HmaEbCdBJD\nPckTUfeCR6DxO+XBpeiwakycNy8GE2dIBZKEmFTeNvy+5sadIjKLkmAUq4+XktCJ\nAxAQ88R1AYC1ViMjomaviJWgkIUY6OwihEmfGEZ4unQi7PydD+OmSKqBOAHJHVDM\nLCe6HJCur2cCmfPSwZTuQBZxF06sqoMjzBf49ocQle6D5nWdMBVh6rQ4ASrg2MD+\njjer0+EjtvKadIcrmWDGUi1de9+XDgsyaffj03WvS6Ym6azVDv6lp/Jd5roqNVH5\n08WJGy5BBdmT27BzM5c2lgmCLvrVJg0244hE/qPONR3arP8g8ib66O15Pq8q5pC3\nN/Xv8QhNAgMBAAECggEAHqwpoYtFaec7UazPhtb6XvaeCns04tyO/mn/8GBKqFXT\nmhubntLRR//e7/dGIOPy89scsfd25lf0UTw3CCPZjWYyjgFTI1fx5W6/ed4MMRjB\nfkWDfaVxI9wS+9TiUYDPjmXBX5HfZ73a1yZ9N1GGUztYAWk9hME79KpJcujn+JIt\n7UaORWzhPk2m+a2Oj2MJCgZhNZ408/hSg+Rs1sUni3Xj7fBOHt6xNc/oQwKmix7V\nagUkxxD8rBtghXNDYXkce89VX/zPsAnnZDZh5DbE4/9DvOli4Xp9SJJhwbO5lTGG\nWsAIuNkX1yxX3ig2RuxcGU5/74hWNSSINxGqK9EiQQKBgQDhiI6eBkNZIuXRDdib\nTM3QIO4UvYmYlcou5gdVGZ/j1iTa7sZ6l/OfY4Qf9WzaHeehKETYZrMTkK07OEQB\nGwlpYj8PJXQbekDxylquIktIlYEOWO2WqiVTY2Ur/mvnCCQubG+pl0PE+/rIuyYd\nbKN21pqLXcM65SFQ9HvkGlScRQKBgQDYMjL1zPpUta7Sn2wbTDi7yt+IueMPpR0Q\naruNQd3fTrM9wcu8vs3GtchTfBJ6AW/AhDy6rMV6NCg56iQGhiZtULTgtt3XFi4e\ni5qDkeAGZbSiLzYZIjyf08f5NpdikAyBZdQVL2h6yDrXRRLUVfvaQjlMeFQRg46w\nLHI0JTAwaQKBgEAtVLABBj8iIBV6BC5FD7fu9vCt8q6ZyTvJN0LvFMGHmVs3YQFX\npfqwHdPeSchThCsmw1h0+PZTUAgu/aL255m2XE1aEg0Tn9FuDJnKpnOUH3JOueUK\nq65r9Uksj9XhSjJvpuKyaZVvQrDGGJV86ZMShE2uM7TZqL5Zo7uIBpWlAoGARNwo\nUxYInbaIillwy3kJkPbbH+dlJPSIP1RfjGxwSNH+UStKw0FatXHs7npUQDv45i64\nURT6iSPXtCqZcuKDlsnf8rsMCZfs9Jmuiz2JR0BZulajOnonKRkBVqVGroQHF6fh\nVyYUdxcTdsFvb+Y7I5d4PJ0O2c03Q3HEpks6ABECgYEA3qnbytTBuj2mWmpzwSgL\nHSipOYMTEgrjkrPbkwLLq7LoE2bhs1B2sDvPjjKJ+8VgMGBuNBE+lTrs6Ene5Onk\n3xvJKFADyM/O0iQPJ01lNxTYscuZgwNqw3mXUbykJrI+DFFsGY0vs/sYeHnTSwaH\nudL0nnyEiUNRTKqzI08y8OQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "hichioka@tech-card.iam.gserviceaccount.com",
+  "client_id": "113307233951618415196",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hichioka%40tech-card.iam.gserviceaccount.com"
+}
