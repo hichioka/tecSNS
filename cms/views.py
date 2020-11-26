@@ -1,15 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
-from django.views.generic.list import ListView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
-from django.views import generic
+from django.urls import reverse, reverse_lazy
 
+
+#クエリ関係
 from django.db.models import Q
 
+#カードのモデル関係
 from cms.models import Card, WorkSeat
 from cms.forms import  CardForm, ChkForm
 
+#PDF関係
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.pagesizes import landscape
 from reportlab.lib.units import mm
@@ -17,49 +21,48 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfgen import canvas
 
+#google スプレッドシート関係
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 
-#カード関係の処理
-def card_list(request):
-    """カードの一覧"""
-    cards = Card.objects.all().order_by('id') #全部のidを取得して、cardsに入れている
-    return render(request, 'cms/card_list.html',     # 使用するテンプレート
-                  {'cards': cards})         # テンプレートに渡すデータ辞書
+
+#カード関係のview
+class CardList(ListView):
+    """カードリスト表示"""
+    context_object_name = 'card_list'
+    model = Card
 
 
-def card_edit(request, card_id=None):
-    """カードの編集"""
-    if card_id:   # card_id が指定されている (修正時)
-        card = get_object_or_404(Card, pk=card_id)
-    else:         # card_id が指定されていない (追加時)
-        card = Card()
-
-    if request.method == 'POST':
-        card = Card()#格納するためのインスタンスを作成
-        form = CardForm(request.POST, request.FILES, instance=card,)  # POST された request データからフォームを作成、描画
-        if form.is_valid():    # フォームのバリデーション
-            card = form.save(commit=False)
-            card.save()
-            return redirect('cms:card_list')
-    else:    # GET の時
-        form = CardForm(instance=card)  # card インスタンスからフォームを作成
-
-    return render(request, 'cms/card_edit.html', dict(form=form, card_id=card_id))
-
-
-def card_del(request, card_id):
-    """カードの削除"""
-    # return HttpResponse('カードの削除')
-    card = get_object_or_404(Card, pk=card_id)
-    card.delete()
-    return redirect('cms:card_list')
-
-
-def card_detail(request, card_id):
+class CardDetail(DetailView):
     """カードの詳細"""
-    card = get_object_or_404(Card, pk=card_id)
-    return render(request, 'cms/card_detail.html',     # 使用するテンプレートのパス
-                  {'card': card})
+    model = Card
+
+
+class CardCreate(CreateView):
+    """カードの新規作成"""
+    model = Card
+    form_class = CardForm
+
+    def get_success_url(self):
+        return reverse('cms:card_list')
+
+
+class CardUpdate(UpdateView):
+    """カードの編集"""
+    template_name = 'cms/card_update_form.html'
+    model = Card
+    form_class = CardForm
+
+    def get_success_url(self):
+        return reverse('cms:card_detail', kwargs={'pk': self.object.pk})
+
+
+class CardDelete(DeleteView):
+    """カードの削除"""
+    template_name = 'cms/card_confirm_delete.html'
+    model = Card
+    success_url = reverse_lazy('cms:card_list')
 
 
 class CardSearch(ListView):
@@ -72,67 +75,73 @@ class CardSearch(ListView):
         lookups = (
             Q(title__icontains=query) |
             Q(subtitle__icontains=query) |
-            Q(tec_desc__icontains=query) |
-            Q(desc1__icontains=query) |
-            Q(desc2__icontains=query) |
-            Q(desc3__icontains=query) |
             Q(tags__name__icontains=query)
         )
         if query is not None:
             qs = super().get_queryset().filter(lookups).distinct() #distinctで重複を防ぐ
             return qs
-        qs = super().get_queryset()
 
+        qs = super().get_queryset()
         return qs
 
     def get_context_data(self, **kwargs):
+    #検索キーワードを一時的にcontextに保存するコード,検索結果がない時とかに使えるcontextはありません的な
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get('q')
         context['query'] = query
         return context
 
 
-# def card_choice(request):
-#     cards = Card.objects.all().order_by('id')
-#     return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+
+# class CardChoice(generic.FormView):
+#     """カードの選択・確認・PDF・スプレッドに抽出"""
+
+#     def card_choice(request):#カードの選択
+#         if request.method == "POST":
+#             cardlist = request.POST.getlist('choice')#ローカル変数
+#             ChoiceSaveList(cardlist) #コピーを作成
+#             queries = [Q(id__iexact=value) for value in cardlist]
+#             query = queries.pop()
+#             for item in queries:
+#                 query |= item
+#             cards = Card.objects.get_queryset().filter(query)
+
+
+#             return render(request, 'cms/card_choiced.html',
 #                   {'cards': cards})
 
-
-def ChoiceSaveList(cardlist):
-    """印刷するカードをもう一個listに保存してコピー返す関数"""
-    savecardlist = cardlist
-    return savecardlist
-
-
-# def card_choiced(request):
-#     cards = ChoiceSaveList(request)
-#     if len(cards) > 0:
-#         return render(request, 'cms/card_choiced.html',
-#                   {'cards': cards})
-#     else:
-#         cards = Card.objects.all().order_by('id')
-#         return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+#     #からで送信した時の条件も入れておく、もしくわifの方に入れておく
+#         else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
+#             cards = Card.objects.all().order_by('id')
+#             return render(request, 'cms/card_choice.html',     # 使用するテンプレート
 #                   {'cards': cards})
 
-#選択したカードを返す関数
-def card_choice(request):
-    if request.method == "POST":
-        cardlist = request.POST.getlist('choice')
-        ChoiceSaveList(cardlist) #コピーを作成
-        queries = [Q(id__iexact=value) for value in cardlist]
-        query = queries.pop()
-        for item in queries:
-            query |= item
-        cards = Card.objects.get_queryset().filter(query)
+    # def card_confilm(self):#選択したカードの確認
+    # #postデータの受け取りと表示で、受け取ったデータを並べておく、スプレッドにしまっておく
+    #      return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+    #               {'cards': cards})
+        
 
-        return render(request, 'cms/card_choiced.html',
+
+def card_choice(request):#カードの選択
+        if request.method == "POST":
+            cardlist = request.POST.getlist('choice')#ローカル変数
+            queries = [Q(id__iexact=value) for value in cardlist]
+            query = queries.pop()
+            for item in queries:
+                query |= item
+            cards = Card.objects.get_queryset().filter(query)
+
+
+            return render(request, 'cms/card_choiced.html',
                   {'cards': cards})
 
     #からで送信した時の条件も入れておく、もしくわifの方に入れておく
-    else:#初めにレンダリングする時、POstされて値がないときに帰るようにする
-        cards = Card.objects.all().order_by('id')
-        return render(request, 'cms/card_choice.html',     # 使用するテンプレート
+        else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
+            cards = Card.objects.all().order_by('id')
+            return render(request, 'cms/card_choice.html',     # 使用するテンプレート
                   {'cards': cards})
+
 
 
 #pdfにして出力
@@ -143,6 +152,7 @@ class PdfView(View):
     font_name = 'HeiseiKakuGo-W5'  # フォントの指定
     title = 'tecCard.pdf'
 
+    #ここでpostされたデータを再取得したい、もしくわ継続して引き継ぎたいための処理
     # def savelist(request):
     #     if request.method == "POST":
     #         cardlist = request.POST.getlist('choice')
@@ -186,6 +196,7 @@ class PdfView(View):
 
         # pdfの書き出し
         p.save()
+
 
 
 def workseat_list(request):

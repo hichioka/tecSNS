@@ -7,9 +7,9 @@
 
     <div class="d-flex flex-wrap">
 
-      {% for card in cards%}
+      {% for card in card_list%}
       <div class="my-3 mx-2 border rounded-lg w-25 h-100">
-        <a href="{% url 'cms:card_detail' card_id=card.id %}" class="text-dark text-decoration-none ">
+        <a href="{% url 'cms:card_detail' card.pk %}" class="text-dark text-decoration-none ">
           <div class="text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
@@ -19,15 +19,8 @@
             <p>{{ card.tec_desc}}</p>
           </div>
         </a>
-        {% csrf_token %}
-        <div class="text-center my-3">
-          <p>{{ card.tag_list }}</p>
-          <a href="{% url 'cms:card_mod' card_id=card.id %}" class="btn btn-outline-primary btn-sm">修正</a>
-          <a href="{% url 'cms:card_del' card_id=card.id %}" class="btn btn-outline-danger btn-sm">削除</a>
-        </div>
       </div>
       {% endfor %}
-
 
     </div>
 {% endblock content %}
