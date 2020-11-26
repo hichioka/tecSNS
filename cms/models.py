@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+# from django.contrib.auth import get_user_model ログインしているユーザー情報を直接呼び出すのにいる
 
 
 #カードモデルの定義
@@ -9,7 +10,7 @@ class Card(models.Model):
     subtitle = models.CharField('サブタイトル 30文字まで', max_length=30, blank=True, null=True)
     tags =  TaggableManager('タグ', blank=True) #タグ付する
     tecimg = models.ImageField(verbose_name='技術の写真', upload_to='images/',) #imagefild->filefildにしたら動画もいけるようになるかも
-    tec_desc = models.TextField('機器説明 ',)
+    tec_desc = models.TextField('技術の説明 ',)
     desc1 = models.TextField('具体例1 ',) #必要に応じて追加できるようにしたい
     desc2 = models.TextField('具体例2 ',)
     desc3 = models.TextField('具体例3',)

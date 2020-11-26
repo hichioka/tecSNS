@@ -12,10 +12,10 @@
     <p>選択したカードはこれらでいいですか？</p>
 
     <div class="d-flex flex-wrap">
-            {% for card in cards%}
+            {% for card in object_list%}
       <label class="my-3 mx-2 w-25 h-auto">
         <div class="card-box h-100">
-          <div class="text-center text-dark py-3 border border-secondary rounded-lg ">
+          <div class="text-center text-dark py-3 border border-secondary rounded-lg p-3">
             <p>{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-25">
@@ -39,30 +39,5 @@
       </form>
     </div>
 
-<!-- {% for field in form %}
-    {% if field.field.widget.input_type == "radio" %}
-      <div class="form-group row my-4">
-          <div class="col-lg-2 col-form-label">
-                
-            </div>
-        <div class="col-lg-2  form-check">
-          {% for r in field %}
-          {{ r }}
-          {% endfor %}
-        </div>          
-      </div>
-    {% else %}
-      <div class="form-group row my-4">
-          <div class="col-lg-2 col-form-label">
-              {{ field.label_tag }}
-            </div>
-        <div class="col-lg-2 form-check">
-          {% for c in field %}
-          {{ c }}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
-{% endfor %}  -->
 
 {% endblock content %}
