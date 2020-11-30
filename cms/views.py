@@ -1,10 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse, reverse_lazy
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+from django.core import serializers
+
+import textwrap
 
 #クエリ関係
 from django.db.models import Q
@@ -19,12 +25,17 @@ from reportlab.lib.pagesizes import landscape
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.platypus import Table
+from reportlab.platypus import TableStyle
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from reportlab.lib import colors
+#画像の処理
+from PIL import Image, ImageFilter
 
 #google スプレッドシート関係
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
 
 
 #カード関係のview
@@ -93,75 +104,52 @@ class CardSearch(ListView):
 
 
 
-# class CardChoice(generic.FormView):
-#     """カードの選択・確認・PDF・スプレッドに抽出"""
+def card_choice(request):
+    """#カードの選択"""
+    if request.method == "POST":
+        cardlist = request.POST.getlist('choice')
+        queries = [Q(id__iexact=value) for value in cardlist]
+        query = queries.pop()
+        for item in queries:
+            query |= item
+        cards = Card.objects.get_queryset().filter(query)
+        return render(request, 'cms/card_confirm_choice.html', {'cards': cards})
 
-#     def card_choice(request):#カードの選択
+    #からで送信した時の条件も入れておく、もしくわifの方に入れておく
+    else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
+        cards = Card.objects.all().order_by('id')
+        return render(request, 'cms/card_choice.html',{'cards': cards})
+
+
+# class CreateData(View):
+#     """カードを選択して、PDFとスプレッドシートに出力する"""
+
 #         if request.method == "POST":
 #             cardlist = request.POST.getlist('choice')#ローカル変数
-#             ChoiceSaveList(cardlist) #コピーを作成
 #             queries = [Q(id__iexact=value) for value in cardlist]
 #             query = queries.pop()
 #             for item in queries:
 #                 query |= item
 #             cards = Card.objects.get_queryset().filter(query)
 
-
-#             return render(request, 'cms/card_choiced.html',
-#                   {'cards': cards})
+#     def choice(request):
+#         return render(request, 'cms/card_confirm_choice.html', {'cards': cards})
 
 #     #からで送信した時の条件も入れておく、もしくわifの方に入れておく
 #         else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
 #             cards = Card.objects.all().order_by('id')
-#             return render(request, 'cms/card_choice.html',     # 使用するテンプレート
-#                   {'cards': cards})
+#             return render(request, 'cms/card_choice.html',{'cards': cards})
 
-    # def card_confilm(self):#選択したカードの確認
-    # #postデータの受け取りと表示で、受け取ったデータを並べておく、スプレッドにしまっておく
-    #      return render(request, 'cms/card_choice.html',     # 使用するテンプレート
-    #               {'cards': cards})
-        
-
-
-def card_choice(request):#カードの選択
-        if request.method == "POST":
-            cardlist = request.POST.getlist('choice')#ローカル変数
-            queries = [Q(id__iexact=value) for value in cardlist]
-            query = queries.pop()
-            for item in queries:
-                query |= item
-            cards = Card.objects.get_queryset().filter(query)
-
-
-            return render(request, 'cms/card_choiced.html',
-                  {'cards': cards})
-
-    #からで送信した時の条件も入れておく、もしくわifの方に入れておく
-        else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
-            cards = Card.objects.all().order_by('id')
-            return render(request, 'cms/card_choice.html',     # 使用するテンプレート
-                  {'cards': cards})
 
 
 
 #pdfにして出力
-class PdfView(View):
+class PdfCreate(View):
 
     #関数定義
     filename = 'tecCard.pdf'  # 保存時の出力ファイル名
     font_name = 'HeiseiKakuGo-W5'  # フォントの指定
     title = 'tecCard.pdf'
-
-    #ここでpostされたデータを再取得したい、もしくわ継続して引き継ぎたいための処理
-    # def savelist(request):
-    #     if request.method == "POST":
-    #         cardlist = request.POST.getlist('choice')
-    #         queries = [Q(id__iexact=value) for value in cardlist]
-    #         query = queries.pop()
-    #         for item in queries:
-    #             query |= item
-    #         cards = Card.objects.get_queryset().filter(query)
-    #     return cards
 
 
     def get(self, request, *args, **kwargs):
@@ -177,25 +165,108 @@ class PdfView(View):
     def _create_pdf(self, response):
 
         size = landscape(A4)#横向き
-        # size = portrait(A4)#縦向き
-        #サイズの変更は後々入れていく
-
         # pdfを描く場所を作成：pdfの原点は左上にする(bottomup=False)
         p = canvas.Canvas(response, pagesize=size, bottomup=False)
+
         pdfmetrics.registerFont(UnicodeCIDFont(self.font_name))
         p.setTitle(self.title)  #pdfのタイトルを指定
 
-        # フォントとサイズ(9)を指定して、左から20mm・上から18mmの位置に「はろーわーるど」を表示
-        p.setFont(self.font_name, 9)
-        p.drawString(20*mm, 18*mm, 'ハロー')
+        #idの値を取得してリストに格納
+        # card = Card.objects.values_list('title', flat=True)
+        card_title = Card.objects.values_list('title', flat=True)
+        card_sub = Card.objects.values_list('subtitle', flat=True)
+        card_img = Card.objects.values_list('tecimg', flat=True)#media/が追加されてないから表示できない
+        card_desc = Card.objects.values_list('tec_desc', flat=True)#15文字で改行したい
 
-        p.showPage()#改ぺーじ
+        titledata = [
+        [card_title[0], card_title[1], card_title[2], card_title[3], card_title[4]],
+        [card_title[5], card_title[6], card_title[7], card_title[8], card_title[9]],
+        ]
+        subdata = [
+        [card_sub[0], card_sub[1], card_sub[2], card_sub[3], card_sub[4]],
+        [card_sub[5], card_sub[6], card_sub[7], card_sub[8], card_sub[9]],
+        ]
+        imgdata = [
+        [card_img[0], card_img[1], card_img[2], card_img[3], card_img[4]],
+        [card_img[5], card_img[6], card_img[7], card_img[8], card_img[9]],
+        ]
+        descdata = [
+        [card_desc[0], card_desc[1], card_desc[2], card_desc[3], card_desc[4]],
+        [card_desc[5], card_desc[6], card_desc[7], card_desc[8], card_desc[9]],
+        ]
+        # cardimg = ImageReader(card_img[0:])
+
+
+        titletable = Table(titledata, colWidths=(55*mm), rowHeights=(91*mm))
+        titletable.setStyle(TableStyle([
+            ('FONT', (0, 0), (4, 4), self.font_name, 12),
+            ('VALIGN', (0, 0), (4, 4), 'BOTTOM'),#文字の縦の位置
+            ('ALIGN',  (0, 0), (4, 4), 'CENTER'),#文字の横の位置
+        ]))
+        subtable = Table(subdata, colWidths=(55*mm), rowHeights=(91*mm))
+        subtable.setStyle(TableStyle([
+            ('FONT', (0, 0), (4, 4), self.font_name, 9),
+            ('VALIGN', (0, 0), (4, 4), 'BOTTOM'),#文字の縦の位置
+            ('ALIGN',  (0, 0), (4, 4), 'CENTER'),#文字の横の位置
+        ]))
+        desctable = Table(descdata, colWidths=(55*mm), rowHeights=(91*mm))
+        desctable.setStyle(TableStyle([
+            ('FONT', (0, 0), (4, 4), self.font_name, 9),
+            ('BOX', (0, 0), (4, 4), 0.5, colors.black),
+            ('INNERGRID', (0, 0), (4, 4), 0.25, colors.black),
+            ('VALIGN', (0, 0), (4, 4), 'TOP'),
+            ('ALIGN',  (0, 0), (4, 4), 'CENTER'),
+        ]))
+
+        # imgUrl = Image.open('media/images/autodrive_xHfLITj.png')
+        # imgurl = imgUrl.rotate(180)
+
+        #動的にファイルの選択を行えるようにする
+        p.drawImage('media/images/autodrive_xHfLITj.png', 20, 100, width=150, height=100, mask='auto',preserveAspectRatio=True)
+        #テーブルの書き出し位置の指定
+        titletable.wrapOn(p, 10*mm, 20*mm)
+        titletable.drawOn(p, 10*mm, 20*mm)
+        subtable.wrapOn(p, 10*mm, 25*mm)
+        subtable.drawOn(p, 10*mm, 25*mm)
+        desctable.wrapOn(p, 10*mm, 14*mm)
+        desctable.drawOn(p, 10*mm, 14*mm)
+
+        p.showPage()#改ぺーじで２ページ目
         #２ページ目で裏面は逆から載せないと、裏と表の内容が違うものになってしまう
-        p.setFont(self.font_name, 9)
-        p.drawString(20*mm, 18*mm, 'はろーわーるど')
+        # imgtable.wrapOn(p, 10*mm, 14*mm)
+        # imgtable.drawOn(p, 10*mm, 14*mm)
 
         # pdfの書き出し
         p.save()
+
+
+
+def SpredCreate(request):
+    scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/drive']
+
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('cms/tech-card-2894e3e99fd6.json', scope)
+    gc = gspread.authorize(credentials)
+    wks = gc.open('teccard test').sheet1
+    #スプレッドシートの項目の書き込み
+    sitems = wks.range('A1:G1')
+    sitems[0].value = '技術名称'
+    sitems[1].value = '技術サブ名称'
+    sitems[2].value = 'イラストURL'
+    sitems[3].value = '技術概要'
+    sitems[4].value = '技術活用事例1'
+    sitems[5].value = '技術活用事例2'
+    sitems[6].value = '技術活用事例3'
+    #カードの中身を格納する配列
+    scontent = wks.range('A4:G12')
+    #dbからデータを取得してスプレッドシートに抽出する
+    scontent[0].value = serializers.serialize("json",Card.objects.all().order_by("id")[0:1])
+    scontent[1].value = serializers.serialize("json",Card.objects.all().order_by("title")[2:3])
+
+    wks.update_cells(sitems)
+    wks.update_cells(scontent)
+
+    return HttpResponseRedirect('https://docs.google.com/spreadsheets/d/16Z_kNldNcmH0BbXgVKyI8kFah4iJiVBnL5erZ3Dqg18/edit#gid=0')
 
 
 
@@ -204,7 +275,4 @@ def workseat_list(request):
     Wseat = WorkSeat.objects.all().order_by('id') #全部のidを取得して、cardsに入れている
     return render(request, 'cms/workseat_list.html',     # 使用するテンプレート
                   {'Wseat': Wseat})         # テンプレートに渡すデータList
-
-
-
 

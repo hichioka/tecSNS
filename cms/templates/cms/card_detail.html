@@ -10,38 +10,42 @@
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの詳細</h4>
-
-    <div class="right-content d-flex flex-wrap">
-      <div class="card text-center py-2 my-3  border bg-light rounded w-25 p-3">
-        <p>{{ card.title }}</p>
-        <p>{{ card.subtitle }}</p>
-        <img class="rounded w-100" src={{card.tecimg.url}} height="150">
-        <p>{{ card.tec_desc }}</p>
-      </div>
-      <div class="text-center py-2 px-3 my-3 mx-auto w-25">
-          <p>{{ card.title }}</p> 
+    <div class="main d-flex">
+      <div class="left-content center-block w-50 mx-auto">
+        <div class="active front card text-center py-2 px-3 my-3 border-dark bg-light rounded">
+          <p>{{ card.title }}</p>
           <p>{{ card.subtitle }}</p>
-          <p>{{ card.tecimg.url }}</p>
-          <p>{{ card.tec_desc }}</p>
-      </div>
-    </div>
-
-    <div class="left-content d-flex flex-wrap">
-      <div class="card text-center py-2 my-3  border bg-light rounded w-25" id="back">
-        <p>{{ card.desc1 }}</p>
-        <p>{{ card.desc2 }}</p>
-        <p>{{ card.desc3 }}</p>
-      </div>
-      <div class="text-center py-2 px-3 my-3 mx-auto w-25">
+          <div class="mx-auto">
+            <img class="rounded w-100" src={{card.tecimg.url}} height="150">
+          </div>
+          <p>{{ card.tec_desc|linebreaks}}</p>
+        </div>
+        <div class="back card text-center py-2 px-3 my-3 border border-dark bg-light rounded" id="back">
           <p>{{ card.desc1 }}</p>
           <p>{{ card.desc2 }}</p>
           <p>{{ card.desc3 }}</p>
+        </div>
+      </div>
+
+      <div class="right-content w-50">
+        <div class="text-center py-2 px-3 my-3 mx-auto ">
+          <p>{{ card.title }}</p> 
+          <p>{{ card.subtitle }}</p>
+          <p>{{ card.tecimg.url }}</p>
+          <p>{{ card.tec_desc|linebreaks}}</p>
+        </div>
+        <div class="text-center py-2 px-3 my-3 mx-auto">
+          <p>{{ card.desc1 }}</p>
+          <p>{{ card.desc2 }}</p>
+          <p>{{ card.desc3 }}</p>
+        </div>
       </div>
     </div>
-    <div>
-        {% csrf_token %}
-        <a href="{% url 'cms:card_update' card.pk %}" class="btn btn-outline-primary btn-sm">編集</a>
-        <a href="{% url 'cms:card_del' card.pk %}" class="btn btn-outline-danger btn-sm">削除</a>
+
+    <div class="botton">
+      {% csrf_token %}
+      <a href="{% url 'cms:card_update' card.pk %}" class="btn btn-outline-primary btn-sm">編集</a>
+      <a href="{% url 'cms:card_del' card.pk %}" class="btn btn-outline-danger btn-sm">削除</a>
     </div>
 
     <section class="my-5">

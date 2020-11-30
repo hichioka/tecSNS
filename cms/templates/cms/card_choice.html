@@ -9,10 +9,11 @@
 {% block title %}カードの選択{% endblock title %}
 
 {% block content %}
-
+    <h4 class="mt-4 mb-5 border-bottom">カードの選択</h4>
     <div class="d-flex flex-wrap">
       <form method="post">
       {% for card in cards%}
+      {% csrf_token %}
       <label class="my-3 mx-2 w-25 h-auto">
         <div class="card-box h-100">
           <input type="checkbox" name="choice" value="{{card.id}}" class="radio-input">
@@ -22,7 +23,7 @@
             <div class="mx-auto px-3 h-25">
               <img class="rounded w-100" src={{card.tecimg.url}}>
             </div>
-            <p>{{ card.tec_desc }}</p>
+            <p>{{ card.tec_desc|linebreaks}}</p>
           </div>
         </div>
       </label>
@@ -32,7 +33,7 @@
 
         <div class="form-group row">
           <div class="offset-md-3 col-md-9">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <button type="submit" class="btn btn-primary">選択する</button>
           </div>
         </div>
       </form>
