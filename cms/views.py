@@ -248,23 +248,58 @@ def SpredCreate(request):
     credentials = ServiceAccountCredentials.from_json_keyfile_name('cms/tech-card-2894e3e99fd6.json', scope)
     gc = gspread.authorize(credentials)
     wks = gc.open('teccard test').sheet1
-    #スプレッドシートの項目の書き込み
-    sitems = wks.range('A1:G1')
-    sitems[0].value = '技術名称'
-    sitems[1].value = '技術サブ名称'
-    sitems[2].value = 'イラストURL'
-    sitems[3].value = '技術概要'
-    sitems[4].value = '技術活用事例1'
-    sitems[5].value = '技術活用事例2'
-    sitems[6].value = '技術活用事例3'
-    #カードの中身を格納する配列
-    scontent = wks.range('A4:G12')
-    #dbからデータを取得してスプレッドシートに抽出する
-    scontent[0].value = serializers.serialize("json",Card.objects.all().order_by("id")[0:1])
-    scontent[1].value = serializers.serialize("json",Card.objects.all().order_by("title")[2:3])
 
-    wks.update_cells(sitems)
-    wks.update_cells(scontent)
+    #dbから項目ごとに情報を取得
+    title = Card.objects.values_list('title', flat=True)
+    subt = Card.objects.values_list('subtitle', flat=True)
+    imgurl = Card.objects.values_list('tecimg', flat=True)
+    tecdesc = Card.objects.values_list('tec_desc', flat=True)
+    desc1 = Card.objects.values_list('desc1', flat=True)
+    desc2 = Card.objects.values_list('desc2', flat=True)
+    desc3 = Card.objects.values_list('desc3', flat=True)
+    
+    #選択したデータ数の記述
+    sinfo = wks.range('A1:C3')
+    sinfo[0].value = '選択した技術数'
+    sinfo[3].value = 'count'
+
+    #スプレッドシートの項目の書き込み
+    sitems = wks.range('A4:G4')
+    items = [
+    '技術名称','技術サブ名称','イラストURL','技術概要','技術活用事例1','技術活用事例2','技術活用事例3',
+    ]
+    i = 0
+    for sitem in items:
+        sitems[i].value = sitem
+        i += 1
+
+    #セルの範囲指定
+    stitle = wks.range('A5:A30')#終わりの範囲を選択した数にする
+    ssub = wks.range('B5:B30')
+    simg = wks.range('C5:C30')
+    sdesc = wks.range('D5:D30')
+    sdsub1 = wks.range('E5:E30')
+    sdsub2 = wks.range('F5:F30')
+    sdsub3 = wks.range('G5:G30')
+
+    #クエリをlistに保存と
+    j = 0
+    for st, ss, si, sd, sd1, sd2, sd3 in zip(title, subt, imgurl, tecdesc, desc1, desc2, desc3 ):
+        stitle[j].value = st
+        ssub[j].value = ss
+        simg[j].value = si
+        sdesc[j].value = sd
+        sdsub1[j].value = sd1
+        sdsub2[j].value = sd2
+        sdsub3[j].value = sd3
+        j += 1
+
+    #スプレッドシートに書き込むlist
+    itemlist = [
+    sinfo, sitems, stitle, ssub, simg, sdesc, sdsub1, sdsub2, sdsub3
+    ]
+    for wksitem in itemlist:
+        wks.update_cells(wksitem)
 
     return HttpResponseRedirect('https://docs.google.com/spreadsheets/d/16Z_kNldNcmH0BbXgVKyI8kFah4iJiVBnL5erZ3Dqg18/edit#gid=0')
 
