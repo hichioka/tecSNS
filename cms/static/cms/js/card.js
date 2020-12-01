@@ -61,3 +61,30 @@ $(".back").click(function(){
 //         return false;
 //     });
 // });
+
+
+// フォームに入力した値をリアルタイムで反映させ、カードの完成イメージの表示
+function titleInputCheck() {
+  var TitleValue = document.getElementById( "id_title" ).value;
+  document.getElementById( "title_value_box" ).innerHTML = TitleValue;
+}
+function subTitleInputCheck() {
+  var SubTitleValue = document.getElementById( "id_subtitle" ).value;
+  document.getElementById( "subtitle_value_box" ).innerHTML = SubTitleValue;
+}
+function tecDescInputCheck() {
+  var SubTitleValue = document.getElementById( "id_tec_desc" ).value;
+  document.getElementById( "tecdesc_value_box" ).innerHTML = SubTitleValue;
+}
+function Desc1InputCheck() {
+  var SubTitleValue = document.getElementById( "id_desc1" ).value;
+  document.getElementById( "desc1_value_box" ).innerHTML = SubTitleValue;
+}
+function Desc2InputCheck() {
+  var SubTitleValue = document.getElementById( "id_desc2" ).value;
+  document.getElementById( "desc2_value_box" ).innerHTML = SubTitleValue;
+}
+function Desc3InputCheck() {
+  var SubTitleValue = document.getElementById( "id_desc3" ).value;
+  document.getElementById( "desc3_value_box" ).innerHTML = SubTitleValue;
+}

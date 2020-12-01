@@ -28,7 +28,7 @@ urlpatterns = [
     path('card/spredseat/', views.SpredCreate, name='card_spred'),   # スプレッドに書き込み
 
     #ワークシートのページ
-    path('workseat/', views.workseat_list, name='workseat_list'),
+    path('workseat/', views.WSeatList.as_view(), name='workseat_list'),
 
 
 ]  + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

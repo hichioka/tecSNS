@@ -121,31 +121,9 @@ def card_choice(request):
         return render(request, 'cms/card_choice.html',{'cards': cards})
 
 
-# class CreateData(View):
-#     """カードを選択して、PDFとスプレッドシートに出力する"""
 
-#         if request.method == "POST":
-#             cardlist = request.POST.getlist('choice')#ローカル変数
-#             queries = [Q(id__iexact=value) for value in cardlist]
-#             query = queries.pop()
-#             for item in queries:
-#                 query |= item
-#             cards = Card.objects.get_queryset().filter(query)
-
-#     def choice(request):
-#         return render(request, 'cms/card_confirm_choice.html', {'cards': cards})
-
-#     #からで送信した時の条件も入れておく、もしくわifの方に入れておく
-#         else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
-#             cards = Card.objects.all().order_by('id')
-#             return render(request, 'cms/card_choice.html',{'cards': cards})
-
-
-
-
-#pdfにして出力
 class PdfCreate(View):
-
+    """PDFの作成・取得"""
     #関数定義
     filename = 'tecCard.pdf'  # 保存時の出力ファイル名
     font_name = 'HeiseiKakuGo-W5'  # フォントの指定
@@ -163,7 +141,6 @@ class PdfCreate(View):
 
 
     def _create_pdf(self, response):
-
         size = landscape(A4)#横向き
         # pdfを描く場所を作成：pdfの原点は左上にする(bottomup=False)
         p = canvas.Canvas(response, pagesize=size, bottomup=False)
@@ -242,6 +219,7 @@ class PdfCreate(View):
 
 
 def SpredCreate(request):
+    """スプレッドシート作成・取得"""
     scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
 
@@ -257,7 +235,7 @@ def SpredCreate(request):
     desc1 = Card.objects.values_list('desc1', flat=True)
     desc2 = Card.objects.values_list('desc2', flat=True)
     desc3 = Card.objects.values_list('desc3', flat=True)
-    
+
     #選択したデータ数の記述
     sinfo = wks.range('A1:C3')
     sinfo[0].value = '選択した技術数'
@@ -304,10 +282,9 @@ def SpredCreate(request):
     return HttpResponseRedirect('https://docs.google.com/spreadsheets/d/16Z_kNldNcmH0BbXgVKyI8kFah4iJiVBnL5erZ3Dqg18/edit#gid=0')
 
 
-
-def workseat_list(request):
-    """カードの一覧"""
-    Wseat = WorkSeat.objects.all().order_by('id') #全部のidを取得して、cardsに入れている
-    return render(request, 'cms/workseat_list.html',     # 使用するテンプレート
-                  {'Wseat': Wseat})         # テンプレートに渡すデータList
+#ワークシート関係
+class WSeatList(ListView):
+    """ワークシートリスト表示"""
+    context_object_name = 'Wseat_list'
+    model = WorkSeat
 

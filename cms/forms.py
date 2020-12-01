@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 
 
 from cms.models import Card, WorkSeat, WSque
@@ -12,13 +12,31 @@ class CardForm(ModelForm):
 # 必須事項じゃなくする
     def __init__(self, *args, **kwd):
         super(CardForm, self).__init__(*args, **kwd)
+        #title
+        self.fields["title"].widget.attrs['onkeyup'] = 'titleInputCheck()'
+        #subtitle
+        self.fields["subtitle"].widget.attrs['onkeyup'] = 'subTitleInputCheck()'
         self.fields["subtitle"].required = False
+        #tecdesc
+        self.fields["tec_desc"].widget.attrs['onkeyup'] = 'tecDescInputCheck()'
+        #desc1
+        self.fields["desc1"].widget.attrs['onkeyup'] = 'Desc1InputCheck()'
+        #desc2
+        self.fields["desc2"].widget.attrs['onkeyup'] = 'Desc2InputCheck()'
         self.fields["desc2"].required = False
+        #desc3
+        self.fields["desc3"].widget.attrs['onkeyup'] = 'Desc3InputCheck()'
         self.fields["desc3"].required = False
 
     class Meta:
         model = Card
         fields = ('title','subtitle', 'tags', 'tecimg', 'tec_desc', 'desc1','desc2','desc3')
+        widgets = {
+          'tec_desc': Textarea(attrs={'rows': 3}),
+          'desc1': Textarea(attrs={'rows': 3}),
+          'desc2': Textarea(attrs={'rows': 3}),
+          'desc3': Textarea(attrs={'rows': 3}),
+        }
 
 
 #ワークシートフォーム（webでワークするとき用） queの数は制限するか動的に増やすか
@@ -55,7 +73,7 @@ class SortChoice(forms.Form):
 
 #複数選択可能なチェックボックス　テスト
 class ChkForm(forms.Form):
-     labels = ['チェック','複数チェック','ラジオボタン','動的選択肢１','動的選択肢２']#ココノイミヨクワカッテナイ
+     labels = ['チェック','複数チェック','ラジオボタン','動的選択肢１','動的選択肢２']
 
      four = forms.MultipleChoiceField(
           label=labels[3],
