@@ -1,16 +1,15 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 {% load static %}
+{% load sass_tags %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'cms/css/card.css' %}">
-{% endblock extra_css %}
+{% block extra_scss %}
+<link rel="stylesheet" href="{% sass_src 'cms/scss/card.scss' %}">
+{% endblock extra_scss %}
 
 {% block extra_js %}
 <script src="{% static 'cms/js/card.js' %}"></script>
 {% endblock extra_js%}
-
-{% block title %}カードの編集{% endblock title %}
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの編集</h4>
@@ -19,12 +18,15 @@
         <div class="active front bg-danger text-center py-2 px-3 my-3 border border-dark bg-light rounded">
           <h4 id="title_value_box">{{ card.title }}</h4>
           <p id="subtitle_value_box">{{ card.subtitle }}</p>
+          <div class="cardimg mx-auto px-3">
+            <img id="imgpreview" class="rounded h-100" src={{card.tecimg.url}}>
+          </div>
           <div id="tecdesc_value_box" class="align-items-end">{{ card.tec_desc|linebreaks}}</div>
         </div>
         <div class="back bg-danger text-center py-2 px-3 my-3 border border-dark bg-light rounded">
-          <div id="desc1_value_box">{{ card.desc1 }}</div>
-          <div id="desc2_value_box">{{ card.desc2 }}</div>
-          <div id="desc3_value_box">{{ card.desc3 }}</div>
+          <div id="desc1_value_box" class="sdesc">{{ card.desc1 }}</div>
+          <div id="desc2_value_box" class="sdesc">{{ card.desc2 }}</div>
+          <div id="desc3_value_box" class="sdesc">{{ card.desc3 }}</div>
         </div>
       </div>
 

@@ -1,0 +1,28 @@
+.front, .back{
+  cursor: pointer;
+  width: 270px;
+  height: 410px;
+  position: absolute;
+  z-index: 6;
+  .sdesc{
+    margin-top: 2rem;
+    height: 23%;
+  }
+}
+
+.right-content{
+  height: 450px;
+}
+.left-content{
+  height: 410px;
+}
+
+.cardimg{
+  height: 45%;
+}
+
+
+/*カードサイズ固定する必要あり
+55mm*91mm
+250dpi      150dpi      100dpi      50dpi
+541px*896px 325px*537px 216px*358px 108px*179px*/

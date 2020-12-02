@@ -1,8 +1,6 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 
-{% block title %}カードの削除{% endblock title %}
-
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの削除</h4>
     <p>本当に以下のカードを削除しますか？</p>
@@ -11,7 +9,7 @@
         <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'cms:card_del' card.pk %}">
         <!-- フォームの表示 -->
         {% csrf_token %}
-          <div class="text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
+          <div class="card text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-75">
@@ -19,13 +17,13 @@
             </div>
             <p>{{ card.tec_desc|linebreaks}}</p>
           </div>
-          <div class="form-group row">
-            <div class="offset-md-3 col-md-9">
-              <button type="submit" class="btn btn-primary">削除する</button>
+          <div class="form-group">
+            <div class="w-100">
+              <a href="{% url 'cms:card_detail' card.pk %}" class="m-2 btn btn-secondary btn-sm">戻る</a>
+              <button type="submit" class=" m-2 btn btn-danger">削除する</button>
             </div>
           </div>
         </form>
       </div>
     </div>
-    <a href="{% url 'cms:card_detail' card.pk %}" class="btn btn-secondary btn-sm">戻る</a>
 {% endblock content %}

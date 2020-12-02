@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'imagekit',
     'taggit',
     'django_filters',
+    'sass_processor',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,12 @@ USE_TZ = True
 
 #管理者用の静的ファイル管理フォルダのルート
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
+SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
+SASS_PRECISION = 8
+SASS_OUTPUT_STYLE = 'compressed'
+SASS_TEMPLATE_EXTS = ['.html', '.haml']
 
 #ユーザーようのメディア管理フォルダ
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

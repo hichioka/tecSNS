@@ -17,8 +17,6 @@ urlpatterns = [
     path('card/search/', views.CardSearch.as_view(), name='card_search'),   # 検索結果
 
     path('card/choice/', views.card_choice, name='card_choice'),   # カード選択
-    # path('card/choice/', views.CreateData.as_view(), name='card_choice'),   # カード選択
-    # path('card/choiced/', views.PdfCreate.as_view(), name='card_choiced'),   # カード選択
 
     # path('card/choice/', views.CardChoice.as_view(), name='card_choice'),   # カード選択
     # path('card/choiced/', views.CardChoice.as_view(), name='card_choiced'),   # カード選択
@@ -29,6 +27,5 @@ urlpatterns = [
 
     #ワークシートのページ
     path('workseat/', views.WSeatList.as_view(), name='workseat_list'),
-
 
 ]  + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

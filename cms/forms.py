@@ -17,6 +17,8 @@ class CardForm(ModelForm):
         #subtitle
         self.fields["subtitle"].widget.attrs['onkeyup'] = 'subTitleInputCheck()'
         self.fields["subtitle"].required = False
+        #img
+        self.fields["tecimg"].widget.attrs['onchange'] = 'previewImg(this)'
         #tecdesc
         self.fields["tec_desc"].widget.attrs['onkeyup'] = 'tecDescInputCheck()'
         #desc1
@@ -68,7 +70,6 @@ class SortChoice(forms.Form):
         required=True,
         widget=forms.widgets.Select
     )
-
 
 
 #複数選択可能なチェックボックス　テスト

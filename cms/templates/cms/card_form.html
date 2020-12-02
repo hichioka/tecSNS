@@ -1,16 +1,15 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 {% load static %}
+{% load sass_tags %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'cms/css/card.css' %}">
-{% endblock extra_css %}
+{% block extra_scss %}
+<link rel="stylesheet" href="{% sass_src 'cms/scss/card.scss' %}">
+{% endblock extra_scss %}
 
 {% block extra_js %}
 <script src="{% static 'cms/js/card.js' %}"></script>
 {% endblock extra_js%}
-
-{% block title %}カードの新規追加{% endblock title %}
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの新規追加</h4>
@@ -19,12 +18,15 @@
         <div class="active front bg-danger text-center py-2 px-3 my-3 border border-dark bg-light rounded">
           <h4 id="title_value_box">タイトル</h4>
           <p id="subtitle_value_box">サブタイトル</p>
+          <div class="cardimg mx-auto px-3">
+            <img id="imgpreview" class="rounded h-100" src=https://kokoyori.org/wp-content/uploads/2020/12/sampleimg.png>
+          </div>
           <div id="tecdesc_value_box" class="align-items-end">技術概要</div>
         </div>
         <div class="back bg-danger text-center py-2 px-3 my-3 border border-dark bg-light rounded">
-          <div id="desc1_value_box">技術活用事例1</div>
-          <div id="desc2_value_box">技術活用事例２</div>
-          <div id="desc3_value_box">技術活用事例3</div>
+          <div id="desc1_value_box" class="sdesc">技術活用事例1</div>
+          <div id="desc2_value_box" class="sdesc">技術活用事例２</div>
+          <div id="desc3_value_box" class="sdesc">技術活用事例3</div>
         </div>
       </div>
 

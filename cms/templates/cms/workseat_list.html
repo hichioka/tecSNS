@@ -1,11 +1,13 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 {% load static %}
+{% load sass_tags %}
 
-{% block extra_css %}
-{% endblock extra_css %}
+{% block extra_scss %}
+{% endblock extra_scss %}
 
-{% block title %}ワークシートの一覧{% endblock title %}
+{% block extra_js %}
+{% endblock extra_js%}
 
 {% block content %}
 <h4 class="mt-4 border-bottom">ワークシート一覧</h4>
@@ -31,11 +33,4 @@
 
       <!-- 追加ボタンの条件分けをしなくてはいけない WSのページだとワークシート追加に行く-->
 
-
 {% endblock content %}
-
-
-
-{% block extra_js %}
-
-{% endblock extra_js%}

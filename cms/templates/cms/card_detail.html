@@ -1,16 +1,15 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 {% load static %}
+{% load sass_tags %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'cms/css/card.css' %}">
-{% endblock extra_css %}
+{% block extra_scss %}
+<link rel="stylesheet" href="{% sass_src 'cms/scss/card.scss' %}">
+{% endblock extra_scss %}
 
 {% block extra_js %}
 <script src="{% static 'cms/js/card.js' %}"></script>
 {% endblock extra_js%}
-
-{% block title %}カードの詳細{% endblock title %}
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの詳細</h4>
@@ -25,9 +24,9 @@
           <p>{{ card.tec_desc|linebreaks}}</p>
         </div>
         <div class="back text-center py-2 px-3 my-3 border border-dark bg-light rounded">
-          <p>{{ card.desc1 }}</p>
-          <p>{{ card.desc2 }}</p>
-          <p>{{ card.desc3 }}</p>
+          <p class="sdesc">{{ card.desc1 }}</p>
+          <p class="sdesc">{{ card.desc2 }}</p>
+          <p class="sdesc">{{ card.desc3 }}</p>
         </div>
       </div>
 

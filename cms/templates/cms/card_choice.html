@@ -1,12 +1,11 @@
 {% extends "cms/base.html" %}
 {% load bootstrap4 %}
 {% load static %}
+{% load sass_tags %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'cms/css/choice.css' %}">
-{% endblock extra_css %}
-
-{% block title %}カードの選択{% endblock title %}
+{% block extra_scss %}
+<link rel="stylesheet" href="{% sass_src 'cms/scss/choice.scss' %}">
+{% endblock extra_scss %}
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの選択</h4>
@@ -17,10 +16,10 @@
       <label class="my-3 mx-2 w-25 h-auto">
         <div class="card-box h-100">
           <input type="checkbox" name="choice" value="{{card.id}}" class="radio-input">
-           <div class="text-center text-dark py-3 border border-secondary rounded-lg p-3">
+           <div class="card text-center text-dark py-3 border border-secondary rounded-lg p-3">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
-            <div class="mx-auto px-3 h-25">
+            <div class="mx-auto px-3">
               <img class="rounded w-100" src={{card.tecimg.url}}>
             </div>
             <p>{{ card.tec_desc|linebreaks}}</p>

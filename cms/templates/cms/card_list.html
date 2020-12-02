@@ -1,16 +1,20 @@
 {% extends "cms/base.html" %}
+{% load bootstrap4 %}
+{% load sass_tags %}
 
-{% block title %}カードの一覧{% endblock title %}
+{% block extra_scss %}
+{% endblock extra_scss %}
+
+{% block extra_js %}
+{% endblock extra_js%}
 
 {% block content %}
     <h4 class="mt-4 border-bottom">カード一覧</h4>
-
     <div class="d-flex flex-wrap">
-
       {% for card in card_list%}
-      <div class="my-3 mx-2 border rounded-lg w-25 h-100">
-        <a href="{% url 'cms:card_detail' card.pk %}" class="text-dark text-decoration-none ">
-          <div class="text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
+      <div class="my-3 mx-2 w-25">
+        <a href="{% url 'cms:card_detail' card.pk %}" class="text-decoration-none ">
+          <div class="card text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-75">

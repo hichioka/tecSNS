@@ -27,41 +27,6 @@ $(".back").click(function(){
 
 });
 
-//２種類めのカードエフェクト
-// $(function() {
-//     $("left-content").click(function() {
-//       // 変数の定義
-//         var $currentElm = $("front.active");
-//             $targetElm = $("back");
- 
-//         $("front").removeClass("active");
-//         $(back).addClass("active");
- 
-//         $(".left-content").addClass("animate");
-//         $targetElm
-//             .addClass("animate");
-//         var timer = setTimeout(function() {
-//             $currentElm
-//                 .removeClass("active")
-//                 .addClass("animate");
-//             $targetElm
-//                 .removeClass("animate")
-//                 .addClass("active");
-//             $(".left-content")
-//                 .removeClass("animate")
-//                 .addClass("animateEnd");
-//             var timer = setTimeout(function() {
-//                 $(".left-content")
-//                     .removeClass("animateEnd");
-//                 $currentElm
-//                     .removeClass("animate");
-//                 $(".left-content").removeClass("animate");
-//             }, 500);
-//         }, 500);
-//         return false;
-//     });
-// });
-
 
 // フォームに入力した値をリアルタイムで反映させ、カードの完成イメージの表示
 function titleInputCheck() {
@@ -71,6 +36,13 @@ function titleInputCheck() {
 function subTitleInputCheck() {
   var SubTitleValue = document.getElementById( "id_subtitle" ).value;
   document.getElementById( "subtitle_value_box" ).innerHTML = SubTitleValue;
+}
+function previewImg(obj){
+  var fileReader = new FileReader();
+  fileReader.onload = (function() {
+    document.getElementById('imgpreview').src = fileReader.result;
+  });
+  fileReader.readAsDataURL(obj.files[0]);
 }
 function tecDescInputCheck() {
   var SubTitleValue = document.getElementById( "id_tec_desc" ).value;

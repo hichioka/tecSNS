@@ -1,0 +1,3 @@
+*,*::before,*::after{box-sizing:border-box}.card-box:hover{box-shadow:0 0 20px rgba(0,0,0,0.3)}radio-input{position:absolute;display:none}.label:hover,.radio-inpu:focus+label{box-shadow:0 0 20px rgba(0,0,0,0.6)}.card-box:checked+label{color:#ffc107}.radio-input:checked+label::before{background-color:#fff}
+
+/*# sourceMappingURL=choice.css.map */
