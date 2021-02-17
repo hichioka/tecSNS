@@ -9,7 +9,7 @@
         <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'cms:card_del' card.pk %}">
         <!-- フォームの表示 -->
         {% csrf_token %}
-          <div class="card text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
+          <div class="card text-center text-dark py-3 rounded-lg btn btn-outline-light shadow">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-75">

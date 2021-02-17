@@ -1,0 +1,18 @@
+{% extends "cms/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% load sass_tags %}
+
+{% block extra_scss %}
+{% endblock extra_scss %}
+
+{% block extra_js %}
+{% endblock extra_js%}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ログイン</button>
+    </form>
+{% endblock content %}

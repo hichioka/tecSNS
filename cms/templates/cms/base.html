@@ -16,7 +16,7 @@
 <script src="{% static 'cms/js/bootstrap.min.js' %}"></script>
 {% block extra_js %}{% endblock extra_js%}
 
-<title>{% block title %}教材管理システム{% endblock %}</title>
+<title>{% block title %}EduCard{% endblock %}</title>
 </head>
 <body>
 
@@ -34,6 +34,8 @@
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">検索</button>
 
       <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 my-2 btn btn-outline-dark btn-sm">印刷カードを選択</a>
+
+
 
       <!-- ソートボタン -->
       <div class="dropdown">

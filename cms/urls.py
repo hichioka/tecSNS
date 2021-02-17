@@ -8,6 +8,9 @@ from django.conf.urls.static import static
 app_name = 'cms'
 urlpatterns = [
 
+    #login機能
+
+
     #カード投稿
     path('card/', views.CardList.as_view(), name='card_list'),   # 一覧
     path('card/detail/<int:pk>/', views.CardDetail.as_view(), name='card_detail'),   # 詳細
@@ -21,9 +24,11 @@ urlpatterns = [
     # path('card/choice/', views.CardChoice.as_view(), name='card_choice'),   # カード選択
     # path('card/choiced/', views.CardChoice.as_view(), name='card_choiced'),   # カード選択
 
-
     path('card/print/', views.PdfCreate.as_view(), name='card_print'),   # PDFを表示
-    path('card/spredseat/', views.SpredCreate, name='card_spred'),   # スプレッドに書き込み
+    path('card/spred/', views.SpredCreate, name='card_spred'),   # スプレッドに書き込み
+
+    #test
+    path('card/spredt_test/', views.spred_create_test, name='card_spredtest'),   # スプレッドに書き込み
 
     #ワークシートのページ
     path('workseat/', views.WSeatList.as_view(), name='workseat_list'),

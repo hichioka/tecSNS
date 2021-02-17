@@ -14,7 +14,7 @@
       {% for card in card_list%}
       <div class="my-3 mx-2 w-25">
         <a href="{% url 'cms:card_detail' card.pk %}" class="text-decoration-none ">
-          <div class="card text-center text-dark py-3 border border-secondary rounded-lg btn btn-outline-light">
+          <div class="card text-center text-dark py-3 rounded-lg btn btn-outline-light shadow">
             <p class="font-weight-bold lead">{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3 h-75">

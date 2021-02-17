@@ -10,11 +10,28 @@
   }
 }
 
+.card-content{
+  height: 520px;
+}
+
 .right-content{
   height: 450px;
 }
 .left-content{
   height: 410px;
+  .cardbotton{
+    position: relative;
+    a{
+      position: absolute;
+      top: 29rem;
+      &:nth-child(1){
+      left: 6rem;
+      }
+      &:nth-last-child(1){
+      left: 10rem;
+      }
+    }
+  }
 }
 
 .cardimg{

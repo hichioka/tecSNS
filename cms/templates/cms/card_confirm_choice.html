@@ -12,11 +12,12 @@
     <p>選択したカードはこれらでいいですか？</p>
 
     <div class="d-flex flex-wrap">
+      <form method="post">
       {% for card in cards%}
       {% csrf_token %}
       <label class="my-3 mx-2 w-25 h-auto">
         <div class="card-box h-100">
-          <div class="card text-center text-dark py-3 border border-secondary rounded-lg p-3">
+          <div class="card text-center text-dark py-3 rounded-lg p-3 shadow">
             <p>{{ card.title }}</p>
             <p>{{ card.subtitle }}</p>
             <div class="mx-auto px-3">
@@ -31,6 +32,15 @@
     {% csrf_token %}
 
     <div class="form-group row">
+     <!--  <div class="offset-md-3 col-md-9">
+        <button type="submit" name="conform" class="btn btn-primary">選択する</button>
+      </div>
+      <div class="offset-md-3 col-md-9">
+        <button type="submit" name="pdf" class="btn btn-primary">pdf出力</button>
+      </div>
+      <div class="offset-md-3 col-md-9">
+        <button type="submit" name="spred" class="btn btn-primary">スプレッドシート作成</button>
+      </div> -->
       <a href="{% url 'cms:card_choice' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">選び直す</a>
       <a href="{% url 'cms:card_print' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">pdf出力</a>
       <a href="{% url 'cms:card_spred' %}" class="d-flex align-items-center my-auto mx-2 btn btn-outline-primary btn-sm">スプレッドシートの取得</a>

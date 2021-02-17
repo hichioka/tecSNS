@@ -113,7 +113,68 @@ def card_choice(request):
         for item in queries:
             query |= item
         cards = Card.objects.get_queryset().filter(query)
-        return render(request, 'cms/card_confirm_choice.html', {'cards': cards})
+        
+        """スプレッドシート作成・取得"""
+        scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+        credentials = ServiceAccountCredentials.from_json_keyfile_name('cms/tech-card-2894e3e99fd6.json', scope)
+        gc = gspread.authorize(credentials)
+        wks = gc.open('teccard test').sheet1
+
+        #dbから項目ごとに情報を取得
+        # title = serializers.serialize('json', cards)
+        title = cards.values_list('title', flat=True)
+        subt = cards.values_list('subtitle', flat=True)
+        imgurl = cards.values_list('tecimg', flat=True)
+        tecdesc = cards.values_list('tec_desc', flat=True)
+        desc1 = cards.values_list('desc1', flat=True)
+        desc2 = cards.values_list('desc2', flat=True)
+        desc3 = cards.values_list('desc3', flat=True)
+
+
+        #選択したデータ数の記述
+        sinfo = wks.range('A1:C3')
+        sinfo[0].value = '選択した技術数'
+        sinfo[3].value = 'count'
+
+        #スプレッドシートの項目の書き込み
+        sitems = wks.range('A4:G4')
+        items = [
+        '技術名称','技術サブ名称','イラストURL','技術概要','技術活用事例1','技術活用事例2','技術活用事例3',
+        ]
+        i = 0
+        for sitem in items:
+            sitems[i].value = sitem
+            i += 1
+
+        #セルの範囲指定
+        stitle = wks.range('A5:A30')#終わりの範囲を選択した数にする
+        ssub = wks.range('B5:B30')
+        simg = wks.range('C5:C30')
+        sdesc = wks.range('D5:D30')
+        sdsub1 = wks.range('E5:E30')
+        sdsub2 = wks.range('F5:F30')
+        sdsub3 = wks.range('G5:G30')
+
+        #クエリをlistに保存と
+        j = 0
+        for st, ss, si, sd, sd1, sd2, sd3 in zip(title, subt, imgurl, tecdesc, desc1, desc2, desc3 ):
+            stitle[j].value = st
+            ssub[j].value = ss
+            simg[j].value = si
+            sdesc[j].value = sd
+            sdsub1[j].value = sd1
+            sdsub2[j].value = sd2
+            sdsub3[j].value = sd3
+            j += 1
+
+        #スプレッドシートに書き込むlist
+        itemlist = [
+        sinfo, sitems, stitle, ssub, simg, sdesc, sdsub1, sdsub2, sdsub3
+        ]
+        for wksitem in itemlist:
+            wks.update_cells(wksitem)
+
+        return HttpResponseRedirect('https://docs.google.com/spreadsheets/d/16Z_kNldNcmH0BbXgVKyI8kFah4iJiVBnL5erZ3Dqg18/edit#gid=0')
 
     #からで送信した時の条件も入れておく、もしくわifの方に入れておく
     else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
@@ -199,7 +260,7 @@ class PdfCreate(View):
         # imgurl = imgUrl.rotate(180)
 
         #動的にファイルの選択を行えるようにする
-        p.drawImage('media/images/autodrive_xHfLITj.png', 20, 100, width=150, height=100, mask='auto',preserveAspectRatio=True)
+        # p.drawImage('media/images/autodrive_xHfLITj.png', 20, 100, width=150, height=100, mask='auto',preserveAspectRatio=True)
         #テーブルの書き出し位置の指定
         titletable.wrapOn(p, 10*mm, 20*mm)
         titletable.drawOn(p, 10*mm, 20*mm)
@@ -280,6 +341,25 @@ def SpredCreate(request):
         wks.update_cells(wksitem)
 
     return HttpResponseRedirect('https://docs.google.com/spreadsheets/d/16Z_kNldNcmH0BbXgVKyI8kFah4iJiVBnL5erZ3Dqg18/edit#gid=0')
+
+
+
+def spred_create_test(request):
+    """#カードの選択"""
+    if request.method == "POST" and 'spred' in request.POST:
+        cardlist = request.POST.getlist('choice')
+        queries = [Q(id__iexact=value) for value in cardlist]
+        query = queries.pop()
+        for item in queries:
+            query |= item
+        cards = Card.objects.get_queryset().filter(query)
+        #ここでセッションにデータを保持して、それを活用する
+        return render(request, 'cms/card_confirm_choice.html',{'cards': cards})
+        
+
+    else:#初めにレンダリングする時、Postされて値がないときに帰るようにする
+        cards = Card.objects.all().order_by('id')
+        return render(request, 'cms/card_choice.html',{'cards': cards})
 
 
 #ワークシート関係

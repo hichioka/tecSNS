@@ -13,24 +13,30 @@
 
 {% block content %}
     <h4 class="mt-4 mb-5 border-bottom">カードの詳細</h4>
-    <div class="d-flex">
-      <div class="left-content center-block w-50 mx-auto">
-        <div class="active front text-center py-2 px-3 my-3 border border-dark bg-light rounded">
-          <p>{{ card.title }}</p>
+    <div class="d-flex shadow card-content">
+
+      <div class="left-content center-block w-50 h-100 mx-auto">
+        <div class="active front text-center py-2 px-3 mx-5 my-3 rounded btn btn-outline-light shadow">
+          <h4>{{ card.title }}</h4>
           <p>{{ card.subtitle }}</p>
           <div class="mx-auto">
             <img class="rounded w-100" src={{card.tecimg.url}} height="150">
           </div>
           <p>{{ card.tec_desc|linebreaks}}</p>
         </div>
-        <div class="back text-center py-2 px-3 my-3 border border-dark bg-light rounded">
+        <div class="back text-center py-2 px-3 mx-5 my-3 rounded btn btn-outline-light shadow">
           <p class="sdesc">{{ card.desc1 }}</p>
           <p class="sdesc">{{ card.desc2 }}</p>
           <p class="sdesc">{{ card.desc3 }}</p>
         </div>
+        <div class="botton cardbotton">
+          {% csrf_token %}
+          <a href="{% url 'cms:card_update' card.pk %}" class="btn btn-outline-primary btn-sm">編集</a>
+          <a href="{% url 'cms:card_del' card.pk %}" class="btn btn-outline-danger btn-sm">削除</a>
+        </div>
       </div>
 
-      <div class="right-content w-50">
+      <div class="right-content w-50 h-100">
         <div class="text-center py-2 px-3 my-3 mx-auto ">
           <p>{{ card.title }}</p> 
           <p>{{ card.subtitle }}</p>
@@ -45,11 +51,7 @@
       </div>
     </div>
 
-    <div class="botton">
-      {% csrf_token %}
-      <a href="{% url 'cms:card_update' card.pk %}" class="btn btn-outline-primary btn-sm">編集</a>
-      <a href="{% url 'cms:card_del' card.pk %}" class="btn btn-outline-danger btn-sm">削除</a>
-    </div>
+    
 
     <section class="my-5">
       <h4 class="mb-4 border-bottom">フィードバック一覧</h2>
